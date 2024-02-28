@@ -32,10 +32,10 @@ public class gestorMySQL implements IBaseDeDatos {
 //        hostName = baseDeDatos.HOST_RASB;
 //        contrasena = baseDeDatos.RASB_PASS; 
         
-        BD = baseDeDatos.ORTODONCIA_P;
+        BD = baseDeDatos.ORTODONCIA;
         usuario = baseDeDatos.JAOSUSUARIO;
         hostName = baseDeDatos.HOSTLOCAL;
-        contrasena = baseDeDatos.JAOSPASSWORD;  
+        contrasena = baseDeDatos.PASSWORD_DB_KENNYS;  
 //
 //        BD = baseDeDatos.ORTODONCIA;
 //        usuario = baseDeDatos.JAOSUSUARIO;

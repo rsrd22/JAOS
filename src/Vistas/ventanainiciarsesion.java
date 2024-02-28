@@ -10,17 +10,11 @@ import Control.ControlUsuarios;
 import Utilidades.Utilidades;
 import Utilidades.datosUsuario;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
@@ -361,7 +355,12 @@ public class ventanainiciarsesion extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                        if ("Nimbus".equals(info.getName())) {
+                            javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ventanainiciarsesion.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InstantiationException ex) {
@@ -421,14 +420,14 @@ public class ventanainiciarsesion extends javax.swing.JFrame {
                 this.dispose();
                 vprin.setVisible(true);
                 vprin.iniciarComponentes();
-                
+
             }
         }
     }
 
     private void habilitarUnidadDeRed() {
         File unidadDeRed = new File("Z:\\");
-        
+
 //        if (!unidadDeRed.exists()) {   
 //            JOptionPane.showMessageDialog(this, "Verifique la conexion de la unidad de red Z:\\ y vuelva a iniciar la aplicación.");
 //            System.exit(0);

@@ -10,15 +10,11 @@ import Control.ControlCitas;
 import Modelo.Cita;
 import Utilidades.Utilidades;
 import java.awt.Color;
-import java.lang.invoke.MethodHandles;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.Map;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -335,7 +331,7 @@ public class ventanaDiasxHoras extends javax.swing.JFrame {
         btnAnterior.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 0, 0), null));
         btnAnterior.setBorderPainted(false);
         btnAnterior.setContentAreaFilled(false);
-        btnAnterior.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAnterior.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAnterior.setMaximumSize(new java.awt.Dimension(60, 60));
         btnAnterior.setMinimumSize(new java.awt.Dimension(60, 60));
         btnAnterior.addActionListener(new java.awt.event.ActionListener() {
@@ -350,7 +346,7 @@ public class ventanaDiasxHoras extends javax.swing.JFrame {
         btnSiguiente.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 0, 0), null));
         btnSiguiente.setBorderPainted(false);
         btnSiguiente.setContentAreaFilled(false);
-        btnSiguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSiguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSiguiente.setMaximumSize(new java.awt.Dimension(60, 60));
         btnSiguiente.setMinimumSize(new java.awt.Dimension(60, 60));
         btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -363,7 +359,7 @@ public class ventanaDiasxHoras extends javax.swing.JFrame {
         btnEncabezado.setBackground(new java.awt.Color(255, 255, 255));
         btnEncabezado.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, java.awt.Color.black, null));
         btnEncabezado.setContentAreaFilled(false);
-        btnEncabezado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEncabezado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEncabezado.setMaximumSize(new java.awt.Dimension(60, 60));
         btnEncabezado.setMinimumSize(new java.awt.Dimension(60, 60));
         btnEncabezado.addActionListener(new java.awt.event.ActionListener() {
@@ -385,7 +381,7 @@ public class ventanaDiasxHoras extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
             }
         ));
-        tblHorarioSemanalR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tblHorarioSemanalR.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tblHorarioSemanalR.setEnabled(true);
         tblHorarioSemanalR.setGridColor(new java.awt.Color(21, 67, 96));
         tblHorarioSemanalR.setSelectionBackground(new java.awt.Color(41, 128, 185));
@@ -443,13 +439,13 @@ public class ventanaDiasxHoras extends javax.swing.JFrame {
         jLabel3.setText("Motivo:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
 
-        cbMotivo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Consulta", "Control", "Inicio Tratamiento(TTO)", "Limpieza", "Obturación", "Exodoncia" }));
+        cbMotivo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Consulta", "Control", "Inicio Tratamiento(TTO)", "Limpieza", "Obturación", "Exodoncia", "Control + limpieza", "Retiro de Brackets" }));
         cbMotivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbMotivoActionPerformed(evt);
             }
         });
-        jPanel1.add(cbMotivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 150, 30));
+        jPanel1.add(cbMotivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 190, 30));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(21, 67, 96));
@@ -475,7 +471,7 @@ public class ventanaDiasxHoras extends javax.swing.JFrame {
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/iconos/minimizar.png"))); // NOI18N
-        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel7MouseClicked(evt);
@@ -484,7 +480,7 @@ public class ventanaDiasxHoras extends javax.swing.JFrame {
         jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 30, 30));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/iconos/cerrar_1.png"))); // NOI18N
-        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);

@@ -5,13 +5,13 @@
  */
 package Vistas;
 
-import javax.swing.JOptionPane;
 import BaseDeDatos.gestorMySQL;
-import java.util.ArrayList;
 import Busquedas.ventanaBusquedaConcepto;
 import Utilidades.Expresiones;
 import Utilidades.Utilidades;
 import Utilidades.datosUsuario;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,12 +45,11 @@ public class ventanaConsultarConcepto extends javax.swing.JFrame {
         cbArticulos.setVisible(false);
         lblNomArticulos.setVisible(false);
 
-        
         gsql = new gestorMySQL();
 
         cargarArticulos();
         cargarTiposdeTratamientos();
-        
+
         ConceptosEstadoFormulario(0);
 
     }
@@ -513,7 +512,7 @@ public class ventanaConsultarConcepto extends javax.swing.JFrame {
             System.out.println("usuario-----" + datosUsuario.datos.size());
             System.out.println("0,0---" + datosUsuario.datos.get(0).length);
             SQL = "INSERT INTO conceptos VALUES";
-            SQL += "(" + pk + "," + (rbTratamientos.isSelected() ? "0" : (rbArticulos.isSelected()?pk_A:"0")) + ", " + (rbArticulos.isSelected() ? "2" : (rbTratamientos.isSelected()?"1":"3"))
+            SQL += "(" + pk + "," + (rbTratamientos.isSelected() ? "0" : (rbArticulos.isSelected() ? pk_A : "0")) + ", " + (rbArticulos.isSelected() ? "2" : (rbTratamientos.isSelected() ? "1" : "3"))
                     + " ,'" + nombreConcepto.trim() + "', '" + descripcionConcep.trim() + "', '"
                     + datosUsuario.datos.get(0)[0] + "', NOW(), NULL,NULL, " + valor + ", " + pkt + ")";
             consulta.add(SQL);
@@ -529,43 +528,41 @@ public class ventanaConsultarConcepto extends javax.swing.JFrame {
 
     public void Actualizar() {
 
-        String nombreConcepto = Utilidades.decodificarElemento(txtNombreConcepto.getText());
-        String descripcionConcep = Utilidades.decodificarElemento(txtaDesconcepto.getText());
+        String nombreConcepto = Utilidades.decodificarElemento(
+                txtNombreConcepto.getText()
+        );
+        String descripcionConcep = Utilidades.decodificarElemento(
+                txtaDesconcepto.getText()
+        );
         String codigoConcepto = lblcodigoConcep.getText();
         String valorConcepto = txtValor.getText();
         String valor = valorConcepto;
 
-        String sq = "SELECT  COUNT(con.`pk_concepto`) FROM conceptos con INNER JOIN pagosxconceptos pag\n"
-                + "WHERE pag.`pfk_concepto`=con.`pk_concepto` AND pag.`pfk_concepto`='" + codigoConcepto + "'";
-        String count1 = gsql.unicoDato(sq);
-
-        System.out.println("cod---" + count1);
-
         if (nombreConcepto.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Seleccione un concepto para actualizar");
+            JOptionPane.showMessageDialog(
+                    null, "Seleccione un concepto para actualizar"
+            );
             return;
         }
 
         valor = valor.replace("$ ", "").replace(".", "");
 
-        if (Integer.parseInt(count1) <= 0) {
+        try {
+            String sql = "UPDATE conceptos SET "
+                    + "nombre='" + nombreConcepto + "',"
+                    + "descripcion= '" + descripcionConcep + "',"
+                    + "valor='" + valor + "' "
+                    + "WHERE `pk_concepto`= '" + codigoConcepto + "'";
+            cons = gsql.UPDATE(sql);
 
-            try {
-                String sql = "UPDATE conceptos SET nombre='" + nombreConcepto + "',descripcion= '" + descripcionConcep + "',valor='" + valor + "' WHERE `pk_concepto`= '" + codigoConcepto + "'";
-                cons = gsql.UPDATE(sql);
+            JOptionPane.showMessageDialog(null, "Datos actualizados ");
 
-                JOptionPane.showMessageDialog(null, "Datos actualizados ");
-                ConceptosEstadoFormulario(0);
-                System.out.println("entro");
-            } catch (Exception e) {
-            }
-            ConceptosEstadoFormulario(0);
-//            cargarArticulos();
-//            cargarTiposdeTratamientos();
-        } else {
-            JOptionPane.showMessageDialog(null, "El concepto no se puede actualizar porque esta asociado a una factura");
-            ConceptosEstadoFormulario(0);
+            System.out.println("Success");
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
         }
+        
+        ConceptosEstadoFormulario(0);
 
     }
 
@@ -632,16 +629,16 @@ public class ventanaConsultarConcepto extends javax.swing.JFrame {
     }//GEN-LAST:event_cbTipoTratamientosActionPerformed
 
     private void rbArticulosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbArticulosMousePressed
-        
+
     }//GEN-LAST:event_rbArticulosMousePressed
 
     private void rbTratamientosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbTratamientosMousePressed
-        
+
     }//GEN-LAST:event_rbTratamientosMousePressed
 
     private void rbArticulosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbArticulosMouseReleased
-        if(rbArticulos.isEnabled()){
-            if(rbTratamientos.isSelected()){
+        if (rbArticulos.isEnabled()) {
+            if (rbTratamientos.isSelected()) {
                 rbTratamientos.setSelected(false);
             }
             EstablecertipodeConcepto();
@@ -649,8 +646,8 @@ public class ventanaConsultarConcepto extends javax.swing.JFrame {
     }//GEN-LAST:event_rbArticulosMouseReleased
 
     private void rbTratamientosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbTratamientosMouseReleased
-        if(rbTratamientos.isEnabled()){
-            if(rbArticulos.isSelected()){
+        if (rbTratamientos.isEnabled()) {
+            if (rbArticulos.isSelected()) {
                 rbArticulos.setSelected(false);
             }
             EstablecertipodeConcepto();
@@ -731,15 +728,22 @@ public class ventanaConsultarConcepto extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cargarArticulos() {
+        System.out.println("==[ begin cargarArticulos ]==");
+        
         ArrayList<String[]> articulos = new ArrayList<>();
 
-        String sql = "SELECT  `pk_articulo`,`nombre`,`valor`  FROM articulo`";
+        String sql = "SELECT `pk_articulo`,`nombre`,`valor` FROM articulo;";
+        System.out.println("query to execute: ["+sql+"]");
+        
         articulos = gsql.SELECT(sql);
+        System.out.println("articles: ["+articulos+"]");
+        
         lista_Articulos = new ArrayList<>();
         for (int i = 0; i < articulos.size(); i++) { // recorre el array
             lista_Articulos.add(new String[]{articulos.get(i)[0], articulos.get(i)[1], articulos.get(i)[2]});
         }
         cargarlistArticulos();
+        System.out.println("==[ end cargarArticulos ]==");
     }
 
     private void cargarTiposdeTratamientos() {

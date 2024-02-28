@@ -103,6 +103,7 @@ public class gestorMySQL implements IBaseDeDatos {
                 return new ArrayList<>();
             }
         } catch (SQLException ex) {
+            System.err.println("Error: "+sentenciaSQL);
             JOptionPane.showMessageDialog(null,
                     "Ocurrio un error al tratar de obtener los datos\n"
                     + "______________________________________________________\n"

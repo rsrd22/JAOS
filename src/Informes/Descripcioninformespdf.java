@@ -30,7 +30,9 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.JOptionPane;
 /**
@@ -41,25 +43,15 @@ public class Descripcioninformespdf {
     private gestorMySQL resultquery = new gestorMySQL();
     String path ="";
     Informespdf pdf =new Informespdf();
+    SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("es-CO"));
+    SimpleDateFormat formatterDateDes = new SimpleDateFormat("EEEEE, d MMMMM yyyy", Locale.forLanguageTag("es-CO"));
+    
     ControlGeneral gen = new ControlGeneral();
-    
-//    SELECT * FROM pacientextratamiento pxt
-//INNER JOIN (SELECT tto.`pk_tratamiento`, tto.`descripcion`, fac.`pfk_paciente`, SUM(pxc.`valorxcantidad`) total 
-//FROM facturas fac
-//INNER JOIN pagos pag ON fac.`pfk_paciente` = pag.`pfk_paciente` AND fac.`numero` = pag.`pk_pago`
-//INNER JOIN pagosxconceptos pxc ON fac.`pfk_paciente` = pxc.`pfk_paciente` AND fac.`numero` = pxc.`pfk_pago`
-//INNER JOIN conceptos con ON pxc.`pfk_concepto` = con.`pk_concepto`
-//INNER JOIN tratamientos tto ON con.`fk_tratamiento` = tto.`pk_tratamiento`
-//WHERE fac.`estado` = 'pagado' AND fac.`pfk_paciente` = 'CC1066789543'
-//GROUP BY fac.`pfk_paciente`, tto.`pk_tratamiento`) conpa ON pxt.`pfk_paciente` = conpa.pfk_paciente AND pxt.`fk_tratamiento` = conpa.pk_tratamiento AND pxt.`costo` =  conpa.total
-//INNER JOIN personas per ON pxt.`pfk_paciente` = CONCAT (per.`pfk_tipo_documento`, per.`pk_persona`)
-//WHERE pxt.`estado` = 'Activo'
-    
     
     String [] Meses = new String[] {"ENERO","FEBRERO","MARZO","ABRIL", "MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"};
     
     private void IMPRIMIR(String texto) { 
-        if (true) {
+        if (false) {
             System.out.println(texto);
         }
     }
@@ -143,27 +135,7 @@ public class Descripcioninformespdf {
         PdfWriter writer =PdfWriter.getInstance(documento, archivo);
         writer.setPageEvent(new Informespdf(Encabezado));
 
-        //documento.setMargins(R, L, T, B);
-
         documento.setMargins(20, 20, 10,20);
-//        if(!hoja.equals("Carta"))
-//            documento.setMargins(20, 20, 10,40);
-
-        
-        //PdfPTable encabezado=getEncabezadoF("INFORME FINAL",ins,idTipo);
-        ///////////////////////////////////
-        //documento.add(encabezado);
-//        InformeFinal(documento,ins, anexa, lec, jornada, grado, curso, estudiantes, deci, promedio, formato,idTipo,Encabezado);
-     
-        //documento.add(new Paragraph("Hola Mundo!"));
-        //documento.add(new Paragraph("SoloInformaticaYAlgoMas.blogspot.com"));
-        ///////////////////////////////////
-        
-//        URL_FINAL="LibroValoracion"+encode+".pdf";
-//        }catch (Exception e){ IMPRIMIR("ERROR EN GENERACION DE PDF "+e);
-//            URL_FINAL="ERROR "+e;  
-//        }
-//      return URL_FINAL;
         documento.open();
         
         if(categoria == 0 && informe == 0){
@@ -539,7 +511,7 @@ public class Descripcioninformespdf {
 //            SendMail ml = new SendMail();
 //            ml.EnviarEmail("PACIENTE", "rsrd22@gmail.com", "PRUEBA ENCABEZADO", "ESTE MENSAJE ES PARA PROBAR LO QUE PASA EN ENCABEZADO\n"+ex.toString());
             
-            return null;
+            return new PdfPTable(1);
         }
     }
 
@@ -3829,31 +3801,38 @@ public class Descripcioninformespdf {
 
     private void infFactrecdia(Document documento, Map<String, String> list) {
         try{
-            IMPRIMIR("+++++ ENTRE?");
-            String consulta ="SELECT fac.`numero`, fac.`valor_fact`, CONCAT_WS(' ', per.`primer_nombre`, IFNULL(per.`segundo_nombre`, ''), per.`primer_apellido`, IFNULL(per.`segundo_apellido`, '')) NOMBRE, fac.`pfk_paciente`, mop.`pk_tipo_pago`, mop.`valor_pagado`,fac.`fecha_pago` \n" +
+            IMPRIMIR("+++++ ENTRE? infFactrecdia");
+            String consulta = "SELECT fac.`numero`, fac.`valor_fact`, \n" +
+                            "IF(paux.pk_paciente_auxiliar IS NULL, \n" +
+                            "CONCAT_WS(' ', per.`primer_nombre`, IFNULL(per.`segundo_nombre`, ''), per.`primer_apellido`, IFNULL(per.`segundo_apellido`, '')),\n" +
+                            "CONCAT_WS(' ', paux.`primer_nombre`, IFNULL(paux.`segundo_nombre`, ''), paux.`primer_apellido`, IFNULL(paux.`segundo_apellido`, ''))\n" +
+                            ") NOMBRE, \n" +
+                            "fac.`pfk_paciente`, GROUP_CONCAT(IFNULL(mop.`pk_tipo_pago`, 'Ninguno')) Tipo, SUM(IFNULL(mop.`valor_pagado`, 0)) Valor,  DATE_FORMAT(fac.`fecha_pago`, '%Y-%m-%d') fecha\n" +
                             "FROM facturas fac\n" +
                             "LEFT JOIN personas per ON fac.`pfk_paciente`= CONCAT(per.`pfk_tipo_documento`, per.`pk_persona`)\n" +
+                            "LEFT JOIN paciente_auxiliar paux ON fac.pfk_paciente = paux.pk_paciente_auxiliar AND paux.estado = 'Activo'\n" +
                             "LEFT JOIN modo_pago mop ON mop.`pfk_pago` = fac.`numero` \n" +
-                            "WHERE fac.`fecha_pago` = '"+list.get("fini")+"'";
-            consulta = "SELECT fac.`numero`, fac.`valor_fact`, \n" +
-                        "IF(paux.pk_paciente_auxiliar IS NULL, \n" +
-                        "CONCAT_WS(' ', per.`primer_nombre`, IFNULL(per.`segundo_nombre`, ''), per.`primer_apellido`, IFNULL(per.`segundo_apellido`, '')),\n" +
-                        "CONCAT_WS(' ', paux.`primer_nombre`, IFNULL(paux.`segundo_nombre`, ''), paux.`primer_apellido`, IFNULL(paux.`segundo_apellido`, ''))\n" +
-                        ") NOMBRE, \n" +
-                        "fac.`pfk_paciente`, IFNULL(mop.`pk_tipo_pago`, 'Ninguno') Tipo, IFNULL(mop.`valor_pagado`, 0) Valor,  DATE_FORMAT(fac.`fecha_pago`, '%Y-%m-%d') fecha\n" +
-                        "FROM facturas fac\n" +
-                        "LEFT JOIN personas per ON fac.`pfk_paciente`= CONCAT(per.`pfk_tipo_documento`, per.`pk_persona`)\n" +
-                        "LEFT JOIN paciente_auxiliar paux ON fac.pfk_paciente = paux.pk_paciente_auxiliar AND paux.estado = 'Activo'\n" +
-                        "LEFT JOIN modo_pago mop ON mop.`pfk_pago` = fac.`numero` \n" +
-                        "WHERE DATE_FORMAT(fac.`fecha_pago`, '%Y-%m-%d') = '"+list.get("fini")+"' AND fac.`estado` = 'pagado'\n" +
-                        "AND IF(paux.pk_paciente_auxiliar IS NULL, CONCAT(per.`pfk_tipo_documento`, per.`pk_persona`), paux.`pk_paciente_auxiliar`) IS NOT NULL;";
+                            "WHERE DATE_FORMAT(fac.`fecha_pago`, '%Y-%m-%d') = '"+list.get("fini")+"' AND fac.`estado` = 'pagado'\n" +
+                            "AND IF(paux.pk_paciente_auxiliar IS NULL, CONCAT(per.`pfk_tipo_documento`, per.`pk_persona`), paux.`pk_paciente_auxiliar`) IS NOT NULL\n" +
+                            "GROUP BY fac.`numero` ";
+            System.out.println("consulta -> "+consulta);
+            
             ArrayList<String[]> resql = resultquery.SELECT(consulta);
 
             PdfPCell celda = null;
-            float[] tam =  new float[]{5,45,25,25};
-
+            float[] tam =  new float[]{5,45,20,15,15};         
+            
             PdfPTable tabla = new PdfPTable(tam);
             tabla.setWidthPercentage(100);
+            Date date = formatterDate.parse(list.get("fini"));
+            
+            celda = new PdfPCell(new Phrase("Recaudo del día: "+formatterDateDes.format(date)+"\n\n", pdf.font15n));
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celda.setVerticalAlignment(Element.ALIGN_CENTER);
+            celda.setBorder(0);
+            celda.setColspan(tam.length);
+            tabla.addCell(celda);
+            
             celda = new PdfPCell(new Phrase("N°", pdf.font10n));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -3867,6 +3846,12 @@ public class Descripcioninformespdf {
             celda.setBorder(15);
             tabla.addCell(celda);
             celda = new PdfPCell(new Phrase("N° FACTURA", pdf.font10n));
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celda.setVerticalAlignment(Element.ALIGN_CENTER);
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setBorder(15);
+            tabla.addCell(celda);
+            celda = new PdfPCell(new Phrase("TIPO PAGO", pdf.font10n));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setVerticalAlignment(Element.ALIGN_CENTER);
             celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -3898,6 +3883,11 @@ public class Descripcioninformespdf {
                 celda.setVerticalAlignment(Element.ALIGN_CENTER);
                 celda.setBorder(15);
                 tabla.addCell(celda);
+                celda = new PdfPCell(new Phrase(""+resql.get(i)[4], pdf.font10)); 
+                celda.setHorizontalAlignment(Element.ALIGN_LEFT);
+                celda.setVerticalAlignment(Element.ALIGN_CENTER);
+                celda.setBorder(15);
+                tabla.addCell(celda);
                 
                 celda = new PdfPCell(new Phrase(""+Utilidades.formatomoneda(resql.get(i)[1]), pdf.font10)); 
                 celda.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -3910,7 +3900,7 @@ public class Descripcioninformespdf {
                 celda.setHorizontalAlignment(Element.ALIGN_RIGHT);
                 celda.setVerticalAlignment(Element.ALIGN_CENTER);
                 celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                celda.setColspan(3);
+                celda.setColspan(4);
                 celda.setBorder(15);
                 tabla.addCell(celda);
                 celda = new PdfPCell(new Phrase(Utilidades.formatomoneda(""+sumaRecaudo), pdf.font10n));

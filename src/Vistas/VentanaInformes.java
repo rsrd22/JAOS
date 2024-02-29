@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
  * @author Acer
  */
 public class VentanaInformes extends javax.swing.JFrame {
+
     public ArrayList<int[]> listaPosiciones;
     public ArrayList<String[]> listacategorias = new ArrayList<>();
     public ArrayList<String[]> listainformes = new ArrayList<>();
@@ -31,34 +32,35 @@ public class VentanaInformes extends javax.swing.JFrame {
     public Calendar cale;
     public SimpleDateFormat sdf;
     public Descripcioninformespdf informe;
-    
+
     public javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-    
+
     public javax.swing.JLabel lblPaciente = new javax.swing.JLabel();
     public javax.swing.JTextField txtPaciente = new javax.swing.JTextField();
     public javax.swing.JButton btnBuscarP = new javax.swing.JButton();
     public javax.swing.JLabel lblIdPaciente = new javax.swing.JLabel();
     public javax.swing.JComboBox cbBandera = new javax.swing.JComboBox();
-    public javax.swing.JLabel lblBandera = new javax.swing.JLabel(); 
+    public javax.swing.JLabel lblBandera = new javax.swing.JLabel();
     public javax.swing.JRadioButton rbInfohistorico = new javax.swing.JRadioButton();
     public com.toedter.calendar.JDateChooser jdFechafinal = new com.toedter.calendar.JDateChooser();
     public com.toedter.calendar.JDateChooser jdFechainicial = new com.toedter.calendar.JDateChooser();
     public javax.swing.JLabel lblFechafinal = new javax.swing.JLabel();
     public javax.swing.JLabel lblFechainicial = new javax.swing.JLabel();
     public javax.swing.JSeparator jSeparator2 = new javax.swing.JSeparator();
-    
+
     public javax.swing.JCheckBox chPanoramica = new javax.swing.JCheckBox();
     public javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
     public javax.swing.JCheckBox chPanoramicaTodas = new javax.swing.JCheckBox();
     public javax.swing.JCheckBox chRadiografia = new javax.swing.JCheckBox();
     public javax.swing.JCheckBox chRadiografiaTodas = new javax.swing.JCheckBox();
     public javax.swing.JCheckBox chOdontogramaTodas = new javax.swing.JCheckBox();
-    public javax.swing.JCheckBox chOdontograma = new javax.swing.JCheckBox();   
+    public javax.swing.JCheckBox chOdontograma = new javax.swing.JCheckBox();
     public javax.swing.JCheckBox chFotografiaTodas = new javax.swing.JCheckBox();
     public javax.swing.JCheckBox chFotografia = new javax.swing.JCheckBox();
     public javax.swing.JCheckBox chCefalometricoTodas = new javax.swing.JCheckBox();
     public javax.swing.JCheckBox chCefalometrico = new javax.swing.JCheckBox();
     private int x, y;
+
     /**
      * Creates new form VentanaInformes
      */
@@ -67,17 +69,15 @@ public class VentanaInformes extends javax.swing.JFrame {
         Utilidades.EstablecerIcono(this);
         cargarArray();
         sdf = new SimpleDateFormat("yyyy-MM-dd");
-        cale=Calendar.getInstance();  
+        cale = Calendar.getInstance();
         listaPosiciones = new ArrayList<>();
-        modlistCategorias = new DefaultListModel();  
+        modlistCategorias = new DefaultListModel();
         modlistInformes = new DefaultListModel();
         informe = new Descripcioninformespdf();
         this.setLocationRelativeTo(null);
         llenarCategorias();
     }
-         
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -259,7 +259,7 @@ public class VentanaInformes extends javax.swing.JFrame {
     }//GEN-LAST:event_listCategoriaMousePressed
 
     private void listInformesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listInformesMousePressed
-        MostrarOpciones();  
+        MostrarOpciones();
     }//GEN-LAST:event_listInformesMousePressed
 
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
@@ -280,87 +280,86 @@ public class VentanaInformes extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel4MousePressed
 
     private void jPanel4MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseDragged
-        this.setLocation(this.getLocation().x + evt.getX()-x, this.getLocation().y + evt.getY()-y);
+        this.setLocation(this.getLocation().x + evt.getX() - x, this.getLocation().y + evt.getY() - y);
     }//GEN-LAST:event_jPanel4MouseDragged
 
-    public void GenerarN(){
+    public void GenerarN() {
         int cat = listCategoria.getSelectedIndex();
         int inf = listInformes.getSelectedIndex();
-        Map<String, String> list = new HashMap <String, String>();
-        list.put("cat", ""+cat);
-        list.put("inf", ""+inf);
-        if(cat == 0){
-            if(inf == 0){//Diario
-                if(jdFechainicial.isValid()){
+        Map<String, String> list = new HashMap<String, String>();
+        list.put("cat", "" + cat);
+        list.put("inf", "" + inf);
+        if (cat == 0) {
+            if (inf == 0) {//Diario
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha para generar el informe");
                     return;
                 }
-                list.put("fini", ""+sdf.format(jdFechainicial.getCalendar().getTime()));
-            }else if(inf == 1){//Historico Citas
-                list.put("idpac", ""+lblIdPaciente.getText());
-            }else if(inf == 2){//Demanda Inducida
-                if(jdFechainicial.isValid()){
+                list.put("fini", "" + sdf.format(jdFechainicial.getCalendar().getTime()));
+            } else if (inf == 1) {//Historico Citas
+                list.put("idpac", "" + lblIdPaciente.getText());
+            } else if (inf == 2) {//Demanda Inducida
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
                     return;
                 }
-                if(jdFechafinal.isValid()){
+                if (jdFechafinal.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
                     return;
                 }
-                
-                String fechai = ""+sdf.format(jdFechainicial.getCalendar().getTime());
-                String fechaf = ""+sdf.format(jdFechafinal.getCalendar().getTime());
-                String chAusentes = ""+(chPanoramica.isSelected()?"1":"0");
-                String chCancelados = ""+(chRadiografia.isSelected()?"1":"0");
-                String chAtendidos = ""+(chOdontograma.isSelected()?"1":"0");
-                
-                if(chAusentes.equals("0") && chCancelados.equals("0") && chAtendidos.equals("0")){
+
+                String fechai = "" + sdf.format(jdFechainicial.getCalendar().getTime());
+                String fechaf = "" + sdf.format(jdFechafinal.getCalendar().getTime());
+                String chAusentes = "" + (chPanoramica.isSelected() ? "1" : "0");
+                String chCancelados = "" + (chRadiografia.isSelected() ? "1" : "0");
+                String chAtendidos = "" + (chOdontograma.isSelected() ? "1" : "0");
+
+                if (chAusentes.equals("0") && chCancelados.equals("0") && chAtendidos.equals("0")) {
                     JOptionPane.showMessageDialog(null, "Por favor seleccionar al menos un filtro para generar el informe");
                     return;
                 }
-                
-                
-                list.put("fini",fechai);
-                list.put("ffin",fechaf);
+
+                list.put("fini", fechai);
+                list.put("ffin", fechaf);
                 list.put("chAusentes", chAusentes);///Ausentes
                 list.put("chCancelados", chCancelados);//CAncelados
                 list.put("chAtendidos", chAtendidos);//Atendidos
-            }        
-        }else if(cat == 1){
-            if(inf == 0){//Imprimir Historia Clinica
-                list.put("idpac", ""+lblIdPaciente.getText());
-                list.put("chP", ""+(chPanoramica.isSelected()?"1":"0"));
-                list.put("chPT", ""+(chPanoramicaTodas.isSelected()?"1":"0"));
-                list.put("chR", ""+(chRadiografia.isSelected()?"1":"0"));
-                list.put("chRT", ""+(chRadiografiaTodas.isSelected()?"1":"0"));
-                list.put("chO", ""+(chOdontograma.isSelected()?"1":"0"));
-                list.put("chOT", ""+(chOdontogramaTodas.isSelected()?"1":"0"));
-                list.put("chF", ""+(chFotografia.isSelected()?"1":"0"));
-                list.put("chFT", ""+(chFotografiaTodas.isSelected()?"1":"0"));
-                list.put("chC", ""+(chCefalometrico.isSelected()?"1":"0"));
-                list.put("chCT", ""+(chCefalometricoTodas.isSelected()?"1":"0"));
-            }else if(inf == 1){//Historias Cerradas
-                if(jdFechainicial.isValid()){
+            }
+        } else if (cat == 1) {
+            if (inf == 0) {//Imprimir Historia Clinica
+                list.put("idpac", "" + lblIdPaciente.getText());
+                list.put("chP", "" + (chPanoramica.isSelected() ? "1" : "0"));
+                list.put("chPT", "" + (chPanoramicaTodas.isSelected() ? "1" : "0"));
+                list.put("chR", "" + (chRadiografia.isSelected() ? "1" : "0"));
+                list.put("chRT", "" + (chRadiografiaTodas.isSelected() ? "1" : "0"));
+                list.put("chO", "" + (chOdontograma.isSelected() ? "1" : "0"));
+                list.put("chOT", "" + (chOdontogramaTodas.isSelected() ? "1" : "0"));
+                list.put("chF", "" + (chFotografia.isSelected() ? "1" : "0"));
+                list.put("chFT", "" + (chFotografiaTodas.isSelected() ? "1" : "0"));
+                list.put("chC", "" + (chCefalometrico.isSelected() ? "1" : "0"));
+                list.put("chCT", "" + (chCefalometricoTodas.isSelected() ? "1" : "0"));
+            } else if (inf == 1) {//Historias Cerradas
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
                     return;
                 }
-                if(jdFechafinal.isValid()){
+                if (jdFechafinal.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
                     return;
                 }
                 String fini = "";
-                String ffin ="";
-                if(jdFechainicial.getCalendar() != null){
-                    fini = ""+sdf.format(jdFechainicial.getCalendar().getTime());
+                String ffin = "";
+                if (jdFechainicial.getCalendar() != null) {
+                    fini = "" + sdf.format(jdFechainicial.getCalendar().getTime());
                 }
-                System.out.println("fini-.-"+ fini+"///");
-                list.put("fini", ""+fini);
-                  if(jdFechafinal.getCalendar() != null){
-                    ffin = ""+sdf.format(jdFechafinal.getCalendar().getTime());
+                System.out.println("fini-.-" + fini + "///");
+                list.put("fini", "" + fini);
+                if (jdFechafinal.getCalendar() != null) {
+                    ffin = "" + sdf.format(jdFechafinal.getCalendar().getTime());
                 }
-                System.out.println("ffin-.-"+ ffin+"///");
-                list.put("ffin", ""+ffin);
-                list.put("rHist",""+rbInfohistorico.isSelected());
+                System.out.println("ffin-.-" + ffin + "///");
+                list.put("ffin", "" + ffin);
+                list.put("rHist", "" + rbInfohistorico.isSelected());
             }
 //            }else if(inf == 2){//Historias Inactivas
 //                String fini = "";
@@ -377,141 +376,144 @@ public class VentanaInformes extends javax.swing.JFrame {
 //                list.put("ffin", ""+ffin);
 //                list.put("rHist",""+rbInfohistorico.isSelected());
 //            }
-        }else if(cat == 2){
-            if(inf == 0){//Estados
-                list.put("tipo", ""+cbBandera.getSelectedItem());
-                System.out.println("valor bandera"+cbBandera.getSelectedItem());
-                if(jdFechainicial.isValid()){
+        } else if (cat == 2) {
+            if (inf == 0) {//Estados
+                list.put("tipo", "" + cbBandera.getSelectedItem());
+
+                if (jdFechainicial.getCalendar() == null) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Por favor ingrese la fecha inicial para generar"
+                            + " el informe"
+                    );
+                    return;
+                }
+
+                if (jdFechafinal.getCalendar() == null) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Por favor ingrese la fecha final para generar "
+                            + "el informe"
+                    );
+                    return;
+                }
+                String fini = sdf.format(jdFechainicial.getCalendar().getTime());
+                String ffin = sdf.format(jdFechafinal.getCalendar().getTime());
+
+                list.put("fini", fini);
+                list.put("ffin", ffin);
+                list.put("rHist", String.valueOf(rbInfohistorico.isSelected()));
+                
+                System.out.println("list: "+ list.toString());
+            } else if (inf == 1) {//Facturas por Mes
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
                     return;
                 }
-                if(jdFechafinal.isValid()){
+                if (jdFechafinal.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
                     return;
                 }
                 String fini = "";
-                String ffin ="";
-                if(jdFechainicial.getCalendar() != null){
-                    fini = ""+sdf.format(jdFechainicial.getCalendar().getTime());
+                String ffin = "";
+                if (jdFechainicial.getCalendar() != null) {
+                    fini = "" + sdf.format(jdFechainicial.getCalendar().getTime());
                 }
-                System.out.println("fini-.-"+ fini+"///");
-                list.put("fini", ""+fini);
-                  if(jdFechafinal.getCalendar() != null){
-                    ffin = ""+sdf.format(jdFechafinal.getCalendar().getTime());
+                System.out.println("fini-.-" + fini + "///");
+                list.put("fini", "" + fini);
+                if (jdFechafinal.getCalendar() != null) {
+                    ffin = "" + sdf.format(jdFechafinal.getCalendar().getTime());
                 }
-                System.out.println("ffin-.-"+ ffin+"///");
-                list.put("ffin", ""+ffin);
-                list.put("rHist",""+rbInfohistorico.isSelected());
-            }else if(inf == 1){//Facturas por Mes
-                if(jdFechainicial.isValid()){
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
-                    return;
-                }
-                if(jdFechafinal.isValid()){
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
-                    return;
-                }
-                String fini = "";
-                String ffin ="";
-                if(jdFechainicial.getCalendar() != null){
-                    fini = ""+sdf.format(jdFechainicial.getCalendar().getTime());
-                }
-                System.out.println("fini-.-"+ fini+"///");
-                list.put("fini", ""+fini);
-                  if(jdFechafinal.getCalendar() != null){
-                    ffin = ""+sdf.format(jdFechafinal.getCalendar().getTime());
-                }
-                System.out.println("ffin-.-"+ ffin+"///");
-                list.put("ffin", ""+ffin);
-                list.put("rHist",""+rbInfohistorico.isSelected());
-            }else if(inf == 2){//Recaudo por Dia
-                if(jdFechainicial.isValid()){
+                System.out.println("ffin-.-" + ffin + "///");
+                list.put("ffin", "" + ffin);
+                list.put("rHist", "" + rbInfohistorico.isSelected());
+            } else if (inf == 2) {//Recaudo por Dia
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha para generar el informe");
                     return;
                 }
-                list.put("fini", ""+sdf.format(jdFechainicial.getCalendar().getTime()));
-            }else if(inf == 3){//Recaudo por Mes
-                if(jdFechainicial.isValid()){
+                list.put("fini", "" + sdf.format(jdFechainicial.getCalendar().getTime()));
+            } else if (inf == 3) {//Recaudo por Mes
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
                     return;
                 }
-                if(jdFechafinal.isValid()){
+                if (jdFechafinal.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
                     return;
                 }
                 String fini = "";
-                String ffin ="";
-                if(jdFechainicial.getCalendar() != null){
-                    fini = ""+sdf.format(jdFechainicial.getCalendar().getTime());
+                String ffin = "";
+                if (jdFechainicial.getCalendar() != null) {
+                    fini = "" + sdf.format(jdFechainicial.getCalendar().getTime());
                 }
-                System.out.println("fini-.-"+ fini+"///");
-                list.put("fini", ""+fini);
-                  if(jdFechafinal.getCalendar() != null){
-                    ffin = ""+sdf.format(jdFechafinal.getCalendar().getTime());
+                System.out.println("fini-.-" + fini + "///");
+                list.put("fini", "" + fini);
+                if (jdFechafinal.getCalendar() != null) {
+                    ffin = "" + sdf.format(jdFechafinal.getCalendar().getTime());
                 }
-                System.out.println("ffin-.-"+ ffin+"///");
-                list.put("ffin", ""+ffin);
-                list.put("rHist",""+rbInfohistorico.isSelected());
-            }else if(inf == 4){//Recaudo Tipo Pago
-                if(jdFechainicial.isValid()){
+                System.out.println("ffin-.-" + ffin + "///");
+                list.put("ffin", "" + ffin);
+                list.put("rHist", "" + rbInfohistorico.isSelected());
+            } else if (inf == 4) {//Recaudo Tipo Pago
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
                     return;
                 }
-                if(jdFechafinal.isValid()){
+                if (jdFechafinal.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
                     return;
                 }
-                list.put("tipo", ""+cbBandera.getSelectedItem());
+                list.put("tipo", "" + cbBandera.getSelectedItem());
                 String fini = "";
-                String ffin ="";
-                if(jdFechainicial.getCalendar() != null){
-                    fini = ""+sdf.format(jdFechainicial.getCalendar().getTime());
+                String ffin = "";
+                if (jdFechainicial.getCalendar() != null) {
+                    fini = "" + sdf.format(jdFechainicial.getCalendar().getTime());
                 }
-                System.out.println("fini-.-"+ fini+"///");
-                list.put("fini", ""+fini);
-                  if(jdFechafinal.getCalendar() != null){
-                    ffin = ""+sdf.format(jdFechafinal.getCalendar().getTime());
+                System.out.println("fini-.-" + fini + "///");
+                list.put("fini", "" + fini);
+                if (jdFechafinal.getCalendar() != null) {
+                    ffin = "" + sdf.format(jdFechafinal.getCalendar().getTime());
                 }
-                System.out.println("ffin-.-"+ ffin+"///");
-                list.put("ffin", ""+ffin);
-                list.put("rHist",""+rbInfohistorico.isSelected());
-            }else if(inf == 5){//Abono por Pacientes
-                list.put("idpac", ""+lblIdPaciente.getText());
+                System.out.println("ffin-.-" + ffin + "///");
+                list.put("ffin", "" + ffin);
+                list.put("rHist", "" + rbInfohistorico.isSelected());
+            } else if (inf == 5) {//Abono por Pacientes
+                list.put("idpac", "" + lblIdPaciente.getText());
             }
-        }else if(cat == 3){
-            if(inf == 0){//Pacientes Auxiliares
-                list.put("tipo", ""+cbBandera.getSelectedItem());
-            }else if(inf == 1){//Pacientes Activos
-                if(jdFechainicial.isValid()){
+        } else if (cat == 3) {
+            if (inf == 0) {//Pacientes Auxiliares
+                list.put("tipo", "" + cbBandera.getSelectedItem());
+            } else if (inf == 1) {//Pacientes Activos
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha para generar el informe");
                     return;
                 }
-                list.put("fini", ""+sdf.format(jdFechainicial.getCalendar().getTime()));
-            }
-//            else if(inf == 2){//Pacientes Terminados
-//                list.put("fini", ""+sdf.format(jdFechainicial.getCalendar().getTime()));
-//                list.put("ffin", ""+sdf.format(jdFechafinal.getCalendar().getTime()));
-//                list.put("rHist",""+rbInfohistorico.isSelected());
-//            }
-            else if(inf == 2){//Pacientes por Terminar
-                if(jdFechainicial.isValid()){
+                list.put("fini", "" + sdf.format(jdFechainicial.getCalendar().getTime()));
+            } //            else if(inf == 2){//Pacientes Terminados
+            //                list.put("fini", ""+sdf.format(jdFechainicial.getCalendar().getTime()));
+            //                list.put("ffin", ""+sdf.format(jdFechafinal.getCalendar().getTime()));
+            //                list.put("rHist",""+rbInfohistorico.isSelected());
+            //            }
+            else if (inf == 2) {//Pacientes por Terminar
+                if (jdFechainicial.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
                     return;
                 }
-                if(jdFechafinal.isValid()){
+                if (jdFechafinal.isValid()) {
                     JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
                     return;
                 }
-                list.put("fini", ""+sdf.format(jdFechainicial.getCalendar().getTime()));
-                list.put("ffin", ""+sdf.format(jdFechafinal.getCalendar().getTime()));
+                list.put("fini", "" + sdf.format(jdFechainicial.getCalendar().getTime()));
+                list.put("ffin", "" + sdf.format(jdFechafinal.getCalendar().getTime()));
                 //list.put("rHist",""+rbInfohistorico.isSelected());  
             }
         }
-        
-        String archivo = informe.Generarinformes(list); 
-        
-    }  
-    
+
+        String archivo = informe.Generarinformes(list);
+
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -569,72 +571,70 @@ public class VentanaInformes extends javax.swing.JFrame {
     private javax.swing.JList listInformes;
     // End of variables declaration//GEN-END:variables
 
-    
-
     private void cargarArray() {
         /////////////////////////// CAT, NOM
-        listacategorias.add(new String[]{"0","Citas"});
-        listacategorias.add(new String[]{"1","Historia Clinica"});
-        listacategorias.add(new String[]{"2","Factura"});
-        listacategorias.add(new String[]{"3","Paciente"});
+        listacategorias.add(new String[]{"0", "Citas"});
+        listacategorias.add(new String[]{"1", "Historia Clinica"});
+        listacategorias.add(new String[]{"2", "Factura"});
+        listacategorias.add(new String[]{"3", "Paciente"});
         /////////////7////////////CAT, ID, NOm    
-        listainformes.add(new String[]{"0","0","Diario"});
-        listainformes.add(new String[]{"0","1","Historico Citas"});
-        listainformes.add(new String[]{"0","2","Demanda Inducida"});
-        listainformes.add(new String[]{"1","0","Imprimir Historia Clinica"});
-        listainformes.add(new String[]{"1","1","Historias Cerradas"});
+        listainformes.add(new String[]{"0", "0", "Diario"});
+        listainformes.add(new String[]{"0", "1", "Historico Citas"});
+        listainformes.add(new String[]{"0", "2", "Demanda Inducida"});
+        listainformes.add(new String[]{"1", "0", "Imprimir Historia Clinica"});
+        listainformes.add(new String[]{"1", "1", "Historias Cerradas"});
         //listainformes.add(new String[]{"1","2","Historias Inactivas"});
-        listainformes.add(new String[]{"2","0","Estados"});
-        listainformes.add(new String[]{"2","1","Facturas por Mes"});
-        listainformes.add(new String[]{"2","2","Recaudo por Dia"});
-        listainformes.add(new String[]{"2","3","Recaudo por Mes"});
-        listainformes.add(new String[]{"2","4","Recaudo Tipo Pago"});
-        listainformes.add(new String[]{"2","5","Abono por Pacientes"});
-        listainformes.add(new String[]{"3","0","Pacientes Auxiliares"});
-        listainformes.add(new String[]{"3","1","Pacientes Activos"});
-       //listainformes.add(new String[]{"3","2","Pacientes Terminados"});
-        listainformes.add(new String[]{"3","2","Pacientes por Terminar"});
+        listainformes.add(new String[]{"2", "0", "Estados"});
+        listainformes.add(new String[]{"2", "1", "Facturas por Mes"});
+        listainformes.add(new String[]{"2", "2", "Recaudo por Dia"});
+        listainformes.add(new String[]{"2", "3", "Recaudo por Mes"});
+        listainformes.add(new String[]{"2", "4", "Recaudo Tipo Pago"});
+        listainformes.add(new String[]{"2", "5", "Abono por Pacientes"});
+        listainformes.add(new String[]{"3", "0", "Pacientes Auxiliares"});
+        listainformes.add(new String[]{"3", "1", "Pacientes Activos"});
+        //listainformes.add(new String[]{"3","2","Pacientes Terminados"});
+        listainformes.add(new String[]{"3", "2", "Pacientes por Terminar"});
     }
 
     private void llenarCategorias() {
         //cbCate.addItem("Seleccionar");
-        for(int i = 0; i < listacategorias.size(); i++){
-            modlistCategorias.addElement(listacategorias.get(i)[1]);                
+        for (int i = 0; i < listacategorias.size(); i++) {
+            modlistCategorias.addElement(listacategorias.get(i)[1]);
         }
         listCategoria.setModel(modlistCategorias);
     }
-    
+
     private void llenarInforme(String idcat) {
         LimpiarPanelOpciones();
         modlistInformes.removeAllElements();
         listInformes.setModel(modlistInformes);
-        for(String[] lst:listainformes){
-            if(lst[0].equals(idcat)){
-                modlistInformes.addElement(lst[2]);           
+        for (String[] lst : listainformes) {
+            if (lst[0].equals(idcat)) {
+                modlistInformes.addElement(lst[2]);
             }
         }
         listInformes.setModel(modlistInformes);
     }
-    
+
     private void SeleccionarCategoria() {
         int ind = listCategoria.getSelectedIndex();
         //System.out.println("ind----->"+ind);
         //ind = getCategoria(modlistCategorias.getElementAt());
-        llenarInforme(""+ind);
+        llenarInforme("" + ind);
     }
-    
+
     private String getCategoria(String cat) {
-        String retorno ="";
-        for(int i =0; i<listacategorias.size(); i++){
-            if (listacategorias.get(i)[1].equals(cat)){
-                retorno=listacategorias.get(i)[0];
+        String retorno = "";
+        for (int i = 0; i < listacategorias.size(); i++) {
+            if (listacategorias.get(i)[1].equals(cat)) {
+                retorno = listacategorias.get(i)[0];
                 break;
             }
         }
         return retorno;
     }
-    
-    public void BuscarPaciente(){
+
+    public void BuscarPaciente() {
         //new ventanaBusquedapacienteinf(this).setVisible(true);
         new ventanaBusquedapacienteinf(this).setVisible(true);
         //JOptionPane.showMessageDialog(null, "HELOOOOOOOOO O O O O O O ");
@@ -643,19 +643,19 @@ public class VentanaInformes extends javax.swing.JFrame {
     private void LimpiarPanelOpciones() {
         PanelOpciones.removeAll();
         PanelOpciones.repaint();
-        
+
         lblPaciente = new javax.swing.JLabel();
         txtPaciente = new javax.swing.JTextField();
         btnBuscarP = new javax.swing.JButton();
         lblIdPaciente = new javax.swing.JLabel();
         cbBandera = new javax.swing.JComboBox();
-        lblBandera = new javax.swing.JLabel();        
+        lblBandera = new javax.swing.JLabel();
         rbInfohistorico = new javax.swing.JRadioButton();
         jdFechafinal = new com.toedter.calendar.JDateChooser();
         jdFechainicial = new com.toedter.calendar.JDateChooser();
         lblFechafinal = new javax.swing.JLabel();
         lblFechainicial = new javax.swing.JLabel();
-        
+
         chPanoramica = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         chPanoramicaTodas = new javax.swing.JCheckBox();
@@ -665,112 +665,109 @@ public class VentanaInformes extends javax.swing.JFrame {
         chOdontograma = new javax.swing.JCheckBox();
         chFotografiaTodas = new javax.swing.JCheckBox();
         chFotografia = new javax.swing.JCheckBox();
-        
-        
+
     }
-    
+
     private void MostrarOpciones() {
         LimpiarPanelOpciones();
-        
+
         int indC = listCategoria.getSelectedIndex();
         int indI = listInformes.getSelectedIndex();
-        
-        if(indC == 0){//CITAS
-            if(indI == 0){//Diario
-                MostrarOpcDiario();                
-            }else if(indI == 1){//Historico Citas
-                MostrarOpcHistCitas();                
-            }else if(indI == 2){//Demanda Inducida
+
+        if (indC == 0) {//CITAS
+            if (indI == 0) {//Diario
+                MostrarOpcDiario();
+            } else if (indI == 1) {//Historico Citas
+                MostrarOpcHistCitas();
+            } else if (indI == 2) {//Demanda Inducida
                 MostrarOpcDemandaInd();
             }
-        }else if(indC == 1){////Historia Clinica
-            if (indI == 0){ //imprimir historia clinica
-                MostrarOpcHistClinica();  
-            }else if (indI == 1){//Historias cerradas  
+        } else if (indC == 1) {////Historia Clinica
+            if (indI == 0) { //imprimir historia clinica
+                MostrarOpcHistClinica();
+            } else if (indI == 1) {//Historias cerradas  
                 MostrarOpcHistCerradas();
             }
 //            else if (indI == 2){//Historias inactivas
 //                MostrarOpcHistCerradas();
 //            }
-        }else if(indC == 2){////Factura
-            if (indI == 0){ //Estados
+        } else if (indC == 2) {////Factura
+            if (indI == 0) { //Estados
                 MostrarOpcEstados();
-            }else if (indI == 1){//Facturas por Mes
+            } else if (indI == 1) {//Facturas por Mes
                 MostrarOpcHistCerradas();
-            }else if (indI == 2){//Recaudo por Dia
-               MostrarOpcDiario();  
-            }else if (indI == 3){//Recaudo por Mes
+            } else if (indI == 2) {//Recaudo por Dia
+                MostrarOpcDiario();
+            } else if (indI == 3) {//Recaudo por Mes
                 MostrarOpcHistCerradas();
-            }else if (indI == 4){//Recaudo Tipo Pago
+            } else if (indI == 4) {//Recaudo Tipo Pago
                 MostrarOpcTpoPago();
-            }else if (indI == 5){//Abono por Pacientes
-                MostrarOpcHistCitas();                
+            } else if (indI == 5) {//Abono por Pacientes
+                MostrarOpcHistCitas();
             }
-        }else if(indC == 3){////Paciente
-           if (indI == 0){ //Pacientes Auxiliares
+        } else if (indC == 3) {////Paciente
+            if (indI == 0) { //Pacientes Auxiliares
                 MostrarOpcPacAux();
-           }if(indI == 1){//Pacientes Activos
-                MostrarOpcDiario(); 
             }
-//           else if (indI == 2){//Pacientes Terminados  
-//                MostrarOpcHistCerradas();  
-//            }
-           else if (indI == 2){//Pacientes por Terminar 
+            if (indI == 1) {//Pacientes Activos
+                MostrarOpcDiario();
+            } //           else if (indI == 2){//Pacientes Terminados  
+            //                MostrarOpcHistCerradas();  
+            //            }
+            else if (indI == 2) {//Pacientes por Terminar 
                 MostrarOpcPacxTerminar();
             }
-        }  
-        
+        }
+
     }
 
-    private void MostrarOpcDiario(){  
-        
+    private void MostrarOpcDiario() {
+
         System.out.println("*************MostrarOpcDiario***********");
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(21, 67, 96));
         jLabel1.setText("Opciones");
-        
+
         lblFechainicial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblFechainicial.setForeground(new java.awt.Color(21, 67, 96));
         lblFechainicial.setText("Fecha: ");
         jdFechainicial.setDateFormatString("dd/MM/yyyy");
-        jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));  
-       
+        jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));
+
         javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
         PanelOpciones.setLayout(PanelOpcionesLayout);
         PanelOpcionesLayout.setHorizontalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(170, 170, 170)
-                .addComponent(jLabel1))
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(170, 170, 170)
+                                .addComponent(jLabel1))
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         PanelOpcionesLayout.setVerticalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addGap(30, 30, 30)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblFechainicial))
-                    .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel1)
+                                .addGap(30, 30, 30)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addComponent(lblFechainicial))
+                                        .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         System.out.println("*************END MostrarOpcDiario***********");
     }
 
     private void MostrarOpcHistCitas() {
-        
-        
-        
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(21, 67, 96));
         jLabel1.setText("Opciones");
-        
+
         btnBuscarP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/iconos/lupa_1.png"))); // NOI18N
         btnBuscarP.setBorderPainted(false);
         btnBuscarP.setContentAreaFilled(false);
@@ -780,50 +777,50 @@ public class VentanaInformes extends javax.swing.JFrame {
                 BuscarPaciente();
             }
         });
-        
+
         lblPaciente.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblPaciente.setForeground(new java.awt.Color(21, 67, 96));
         lblPaciente.setText("Paciente:");
-        
+
         lblIdPaciente.setText("");
         lblIdPaciente.setVisible(false);
-        
+
         txtPaciente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtPaciente.setForeground(new java.awt.Color(21, 67, 96));
         txtPaciente.setBorder(null);
         txtPaciente.setText("");
         txtPaciente.setEnabled(false);
-        
+
         javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
         PanelOpciones.setLayout(PanelOpcionesLayout);
         PanelOpcionesLayout.setHorizontalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(170, 170, 170)
-                .addComponent(jLabel1))
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                    .addComponent(jSeparator2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(170, 170, 170)
+                                .addComponent(jLabel1))
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lblPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                                        .addComponent(jSeparator2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         PanelOpcionesLayout.setVerticalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(lblPaciente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblPaciente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
     }
 
@@ -832,163 +829,161 @@ public class VentanaInformes extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(21, 67, 96));
         jLabel1.setText("Opciones");
-        
+
         jdFechafinal.setForeground(new java.awt.Color(21, 67, 96));
         jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));
-        jdFechafinal.setDateFormatString("dd/MM/yyyy");  
+        jdFechafinal.setDateFormatString("dd/MM/yyyy");
         jdFechainicial.setDateFormatString("dd/MM/yyyy");
-        
+
         rbInfohistorico.setBackground(new java.awt.Color(255, 255, 255));
         rbInfohistorico.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        rbInfohistorico.setForeground(new java.awt.Color(21, 67, 96));        
+        rbInfohistorico.setForeground(new java.awt.Color(21, 67, 96));
         rbInfohistorico.setText("Informe Historico");
         rbInfohistorico.setHorizontalTextPosition(SwingConstants.LEFT);
-        
+
         lblFechafinal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblFechafinal.setForeground(new java.awt.Color(21, 67, 96));
-        lblFechafinal.setText("Fecha Fin:"); 
+        lblFechafinal.setText("Fecha Fin:");
 
         lblFechainicial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblFechainicial.setForeground(new java.awt.Color(21, 67, 96));
         lblFechainicial.setText("Fecha Inicio:");
 
-
         javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
         PanelOpciones.setLayout(PanelOpcionesLayout);
         PanelOpcionesLayout.setHorizontalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                .addGap(22, 22, 22))
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(167, 167, 167)
-                        .addComponent(jLabel1))
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(rbInfohistorico)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(44, 44, 44)
+                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                                .addGap(22, 22, 22))
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addGap(167, 167, 167)
+                                                .addComponent(jLabel1))
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(rbInfohistorico)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelOpcionesLayout.setVerticalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblFechainicial)
-                            .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    )
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(rbInfohistorico)
-                .addContainerGap(235, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel1)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addGap(34, 34, 34)
+                                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lblFechainicial)
+                                                        .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        )
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
+                                                .addGap(49, 49, 49)
+                                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(rbInfohistorico)
+                                .addContainerGap(235, Short.MAX_VALUE))
         );
     }
 
     private void MostrarOpcPacxTerminar() {
-        try{
-        System.out.println("*************************MostrarOpcPacxTerminar");
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(21, 67, 96));
-        jLabel1.setText("Opciones");
-        
-        jdFechafinal.setForeground(new java.awt.Color(21, 67, 96));
-        jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));
-        jdFechafinal.setDateFormatString("dd/MM/yyyy");
-  
-        jdFechainicial.setDateFormatString("dd/MM/yyyy");
-        //rbInfohistorico.setText("Informe Historico");
-        //rbInfohistorico.setHorizontalTextPosition(SwingConstants.LEFT);
-        lblFechafinal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblFechafinal.setForeground(new java.awt.Color(21, 67, 96));
-        lblFechafinal.setText("Fecha Fin:"); 
+        try {
+            System.out.println("*************************MostrarOpcPacxTerminar");
+            jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+            jLabel1.setForeground(new java.awt.Color(21, 67, 96));
+            jLabel1.setText("Opciones");
 
-        lblFechainicial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblFechainicial.setForeground(new java.awt.Color(21, 67, 96));
-        lblFechainicial.setText("Fecha Inicio:");
+            jdFechafinal.setForeground(new java.awt.Color(21, 67, 96));
+            jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));
+            jdFechafinal.setDateFormatString("dd/MM/yyyy");
 
+            jdFechainicial.setDateFormatString("dd/MM/yyyy");
+            //rbInfohistorico.setText("Informe Historico");
+            //rbInfohistorico.setHorizontalTextPosition(SwingConstants.LEFT);
+            lblFechafinal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            lblFechafinal.setForeground(new java.awt.Color(21, 67, 96));
+            lblFechafinal.setText("Fecha Fin:");
 
-        javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
-        PanelOpciones.setLayout(PanelOpcionesLayout);
-        PanelOpcionesLayout.setHorizontalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(171, 171, 171)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        PanelOpcionesLayout.setVerticalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel1)
-                .addGap(32, 32, 32)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblFechainicial)
-                        .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(277, Short.MAX_VALUE))
-        );
-        
-        }catch(Exception e){
+            lblFechainicial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            lblFechainicial.setForeground(new java.awt.Color(21, 67, 96));
+            lblFechainicial.setText("Fecha Inicio:");
+
+            javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
+            PanelOpciones.setLayout(PanelOpcionesLayout);
+            PanelOpcionesLayout.setHorizontalGroup(
+                    PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(32, 32, 32)
+                                    .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addContainerGap())
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                    .addGap(171, 171, 171)
+                                    .addComponent(jLabel1)
+                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
+            PanelOpcionesLayout.setVerticalGroup(
+                    PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                    .addGap(21, 21, 21)
+                                    .addComponent(jLabel1)
+                                    .addGap(32, 32, 32)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(lblFechainicial)
+                                                    .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
+                                                    .addGap(15, 15, 15)
+                                                    .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addContainerGap(277, Short.MAX_VALUE))
+            );
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     private void MostrarOpcEstados() {
-        
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(21, 67, 96));
         jLabel1.setText("Opciones");
-        
+
         lblBandera.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblBandera.setForeground(new java.awt.Color(21, 67, 96));
         lblBandera.setText("Estado:");
-        
+
         cbBandera.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cbBandera.setForeground(new java.awt.Color(21, 67, 96));
         cbBandera.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(21, 67, 96)));
         cbBandera.removeAllItems();
-        cbBandera.addItem("Seleccionar");  
+        cbBandera.addItem("Seleccionar");
         cbBandera.addItem("Todos");
         cbBandera.addItem("Anulada");
         cbBandera.addItem("Pagado");
         cbBandera.addItem("Vigente");
-        
+
         rbInfohistorico.setForeground(new java.awt.Color(21, 67, 96));
         rbInfohistorico.setText("Historico");
         rbInfohistorico.setFont(new java.awt.Font("Tahoma", 1, 12));
         rbInfohistorico.setBackground(Color.WHITE);
         rbInfohistorico.setHorizontalTextPosition(SwingConstants.LEFT);
-        
+
         jdFechafinal.setForeground(new java.awt.Color(21, 67, 96));
         jdFechafinal.setDateFormatString("dd/MM/yyyy");
         jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));
@@ -1004,58 +999,58 @@ public class VentanaInformes extends javax.swing.JFrame {
         javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
         PanelOpciones.setLayout(PanelOpcionesLayout);
         PanelOpcionesLayout.setHorizontalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbInfohistorico)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
-                                .addComponent(lblBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)))
-                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44)
-                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
-                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(171, 171, 171)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addComponent(rbInfohistorico)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
+                                                                .addComponent(lblBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(27, 27, 27)))
+                                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(44, 44, 44)
+                                                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addContainerGap())
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(171, 171, 171)
+                                .addComponent(jLabel1)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelOpcionesLayout.setVerticalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel1)
-                .addGap(32, 32, 32)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBandera)
-                    .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblFechainicial)
-                        .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(rbInfohistorico)
-                .addContainerGap(188, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabel1)
+                                .addGap(32, 32, 32)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblBandera)
+                                        .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(17, 17, 17)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblFechainicial)
+                                                .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
+                                                .addGap(15, 15, 15)
+                                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(rbInfohistorico)
+                                .addContainerGap(188, Short.MAX_VALUE))
         );
     }
 
@@ -1063,26 +1058,26 @@ public class VentanaInformes extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(21, 67, 96));
         jLabel1.setText("Opciones");
-        
+
         lblBandera.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblBandera.setForeground(new java.awt.Color(21, 67, 96));
         lblBandera.setText("Tipo Pago:");
-        
+
         cbBandera.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cbBandera.setForeground(new java.awt.Color(21, 67, 96));
         cbBandera.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(21, 67, 96)));
         cbBandera.removeAllItems();
-        cbBandera.addItem("Seleccionar");  
+        cbBandera.addItem("Seleccionar");
         cbBandera.addItem("Todos");
         cbBandera.addItem("Efectivo");
         cbBandera.addItem("Tarjeta");
-        
+
         rbInfohistorico.setForeground(new java.awt.Color(21, 67, 96));
         rbInfohistorico.setText("Historico");
         rbInfohistorico.setFont(new java.awt.Font("Tahoma", 1, 12));
         rbInfohistorico.setBackground(Color.WHITE);
         rbInfohistorico.setHorizontalTextPosition(SwingConstants.LEFT);
-        
+
         jdFechafinal.setForeground(new java.awt.Color(21, 67, 96));
         jdFechafinal.setDateFormatString("dd/MM/yyyy");
         jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));
@@ -1098,106 +1093,106 @@ public class VentanaInformes extends javax.swing.JFrame {
         javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
         PanelOpciones.setLayout(PanelOpcionesLayout);
         PanelOpcionesLayout.setHorizontalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbInfohistorico)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblFechainicial, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                            .addComponent(lblBandera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44)
-                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
-                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(171, 171, 171)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addComponent(rbInfohistorico)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(lblFechainicial, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                                        .addComponent(lblBandera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(44, 44, 44)
+                                                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addContainerGap())
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(171, 171, 171)
+                                .addComponent(jLabel1)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelOpcionesLayout.setVerticalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel1)
-                .addGap(32, 32, 32)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBandera)
-                    .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblFechainicial)
-                        .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(rbInfohistorico)
-                .addContainerGap(188, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabel1)
+                                .addGap(32, 32, 32)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblBandera)
+                                        .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(17, 17, 17)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblFechainicial)
+                                                .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
+                                                .addGap(15, 15, 15)
+                                                .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(rbInfohistorico)
+                                .addContainerGap(188, Short.MAX_VALUE))
         );
     }
-    
+
     private void MostrarOpcPacAux() {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(21, 67, 96));
         jLabel1.setText("Opciones");
-        
+
         lblBandera.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblBandera.setForeground(new java.awt.Color(21, 67, 96));
         lblBandera.setText("Tipo Pago:");
-        
+
         cbBandera.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cbBandera.setForeground(new java.awt.Color(21, 67, 96));
         cbBandera.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(21, 67, 96)));
         cbBandera.removeAllItems();
-        cbBandera.addItem("Seleccionar");  
-        cbBandera.addItem("Todos");  
-        cbBandera.addItem("Activo");  
+        cbBandera.addItem("Seleccionar");
+        cbBandera.addItem("Todos");
+        cbBandera.addItem("Activo");
         cbBandera.addItem("Inactivo");
-        
+
         javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
         PanelOpciones.setLayout(PanelOpcionesLayout);
         PanelOpcionesLayout.setHorizontalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(171, 171, 171)
-                .addComponent(jLabel1)
-                .addContainerGap(186, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(171, 171, 171)
+                                .addComponent(jLabel1)
+                                .addContainerGap(186, Short.MAX_VALUE))
         );
         PanelOpcionesLayout.setVerticalGroup(
-            PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel1)
-                .addGap(32, 32, 32)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBandera)
-                    .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(276, Short.MAX_VALUE))
+                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabel1)
+                                .addGap(32, 32, 32)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblBandera)
+                                        .addComponent(cbBandera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(276, Short.MAX_VALUE))
         );
     }
-    
+
     private void MostrarOpcHistClinica() {
-        try{
+        try {
             jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
             jLabel1.setForeground(new java.awt.Color(21, 67, 96));
             jLabel1.setText("Opciones");
@@ -1224,19 +1219,18 @@ public class VentanaInformes extends javax.swing.JFrame {
             txtPaciente.setBorder(null);
             txtPaciente.setText("");
             txtPaciente.setEnabled(false);
-            
+
             System.out.println("MostrarOpcHistClinica-----");
-           
+
             chPanoramica.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chPanoramica.setForeground(new java.awt.Color(21, 67, 96));
             chPanoramica.setBackground(new java.awt.Color(255, 255, 255));
             chPanoramica.setText("Panoramicas");
-            
+
             jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel2.setForeground(new java.awt.Color(21, 67, 96));
             jLabel2.setText("Imagenes");
-            
-            
+
             chPanoramicaTodas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chPanoramicaTodas.setForeground(new java.awt.Color(21, 67, 96));
             chPanoramicaTodas.setBackground(new java.awt.Color(255, 255, 255));
@@ -1246,7 +1240,7 @@ public class VentanaInformes extends javax.swing.JFrame {
             chRadiografia.setForeground(new java.awt.Color(21, 67, 96));
             chRadiografia.setBackground(new java.awt.Color(255, 255, 255));
             chRadiografia.setText("Radiografias");
-            
+
             chRadiografiaTodas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chRadiografiaTodas.setForeground(new java.awt.Color(21, 67, 96));
             chRadiografiaTodas.setBackground(new java.awt.Color(255, 255, 255));
@@ -1262,7 +1256,6 @@ public class VentanaInformes extends javax.swing.JFrame {
             chOdontograma.setForeground(new java.awt.Color(21, 67, 96));
             chOdontograma.setBackground(new java.awt.Color(255, 255, 255));
             chOdontograma.setText("Odontograma");
-            
 
             chFotografiaTodas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chFotografiaTodas.setForeground(new java.awt.Color(21, 67, 96));
@@ -1273,7 +1266,7 @@ public class VentanaInformes extends javax.swing.JFrame {
             chFotografia.setForeground(new java.awt.Color(21, 67, 96));
             chFotografia.setBackground(new java.awt.Color(255, 255, 255));
             chFotografia.setText("Fotografias");
-            
+
             chCefalometricoTodas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chCefalometricoTodas.setForeground(new java.awt.Color(21, 67, 96));
             chCefalometricoTodas.setBackground(new java.awt.Color(255, 255, 255));
@@ -1283,7 +1276,7 @@ public class VentanaInformes extends javax.swing.JFrame {
             chCefalometrico.setForeground(new java.awt.Color(21, 67, 96));
             chCefalometrico.setBackground(new java.awt.Color(255, 255, 255));
             chCefalometrico.setText("Cefalometrico");
-            
+
             chPanoramica.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     EstadoCheck(0);
@@ -1309,9 +1302,9 @@ public class VentanaInformes extends javax.swing.JFrame {
                     EstadoCheck(4);
                 }
             });
-            
+
             chOdontograma.setEnabled(false);
-            chPanoramicaTodas.setEnabled(false);            
+            chPanoramicaTodas.setEnabled(false);
             chRadiografiaTodas.setEnabled(false);
             chOdontogramaTodas.setEnabled(true);
             chFotografiaTodas.setEnabled(false);
@@ -1320,124 +1313,124 @@ public class VentanaInformes extends javax.swing.JFrame {
             javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
             PanelOpciones.setLayout(PanelOpcionesLayout);
             PanelOpcionesLayout.setHorizontalGroup(
-                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                            .addGap(170, 170, 170)
-                            .addComponent(jLabel1))
-                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                            .addGap(23, 23, 23)
-                            .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(lblPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                                        .addComponent(jSeparator2))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(14, 14, 14)
-                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                            .addComponent(chCefalometrico)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(chCefalometricoTodas))
-                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                            .addComponent(chFotografia)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(chFotografiaTodas))
-                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                            .addComponent(chOdontograma)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(chOdontogramaTodas))
-                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                            .addComponent(chRadiografia)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(chRadiografiaTodas))
-                                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                            .addComponent(chPanoramica, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(27, 27, 27)
-                                            .addComponent(chPanoramicaTodas)))))))
-                    .addGap(72, 72, 72))
+                    PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                    .addGap(170, 170, 170)
+                                                    .addComponent(jLabel1))
+                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                    .addGap(23, 23, 23)
+                                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                            .addComponent(lblPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addComponent(txtPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                                                                            .addComponent(jSeparator2))
+                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                    .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                    .addComponent(jLabel2)
+                                                                    .addGap(14, 14, 14)
+                                                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                                    .addComponent(chCefalometrico)
+                                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                    .addComponent(chCefalometricoTodas))
+                                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                                    .addComponent(chFotografia)
+                                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                    .addComponent(chFotografiaTodas))
+                                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                                    .addComponent(chOdontograma)
+                                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                    .addComponent(chOdontogramaTodas))
+                                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                                    .addComponent(chRadiografia)
+                                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                    .addComponent(chRadiografiaTodas))
+                                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                                    .addComponent(chPanoramica, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                    .addGap(27, 27, 27)
+                                                                                    .addComponent(chPanoramicaTodas)))))))
+                                    .addGap(72, 72, 72))
             );
             PanelOpcionesLayout.setVerticalGroup(
-                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addComponent(jLabel1)
-                    .addGap(18, 18, 18)
-                    .addComponent(lblPaciente)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(chPanoramica)
-                        .addComponent(chPanoramicaTodas))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(chRadiografia)
-                        .addComponent(chRadiografiaTodas))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(chOdontograma)
-                        .addComponent(chOdontogramaTodas))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(chFotografia)
-                        .addComponent(chFotografiaTodas))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(chCefalometrico)
-                        .addComponent(chCefalometricoTodas))
-                    .addContainerGap(147, Short.MAX_VALUE))
+                    PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                    .addGap(20, 20, 20)
+                                    .addComponent(jLabel1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lblPaciente)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnBuscarP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel2)
+                                            .addComponent(chPanoramica)
+                                            .addComponent(chPanoramicaTodas))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(chRadiografia)
+                                            .addComponent(chRadiografiaTodas))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(chOdontograma)
+                                            .addComponent(chOdontogramaTodas))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(chFotografia)
+                                            .addComponent(chFotografiaTodas))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(chCefalometrico)
+                                            .addComponent(chCefalometricoTodas))
+                                    .addContainerGap(147, Short.MAX_VALUE))
             );
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public void EstadoCheck(int opc) {
         boolean val = false;
-        if(opc == 0){//Panoramica
-            if(chPanoramica.isSelected()){//true
+        if (opc == 0) {//Panoramica
+            if (chPanoramica.isSelected()) {//true
                 chPanoramicaTodas.setEnabled(true);
-            }else{
+            } else {
                 chPanoramicaTodas.setEnabled(false);
                 chPanoramicaTodas.setSelected(false);
             }
-            
-        }else if(opc == 1){//RAdiografia
-            if(chRadiografia.isSelected()){//true
+
+        } else if (opc == 1) {//RAdiografia
+            if (chRadiografia.isSelected()) {//true
                 chRadiografiaTodas.setEnabled(true);
-            }else{
+            } else {
                 chRadiografiaTodas.setEnabled(false);
                 chRadiografiaTodas.setSelected(false);
             }
-        }else if(opc == 2){//Odontograma
-            if(chOdontograma.isSelected()){//true
+        } else if (opc == 2) {//Odontograma
+            if (chOdontograma.isSelected()) {//true
                 chOdontogramaTodas.setEnabled(true);
-            }else{
+            } else {
                 chOdontogramaTodas.setEnabled(false);
                 chOdontogramaTodas.setSelected(false);
             }
-        }else if(opc == 3){//Fotografia
-            if(chFotografia.isSelected()){//true
+        } else if (opc == 3) {//Fotografia
+            if (chFotografia.isSelected()) {//true
                 chFotografiaTodas.setEnabled(true);
-            }else{
+            } else {
                 chFotografiaTodas.setEnabled(false);
                 chFotografiaTodas.setSelected(false);
             }
-        }else if(opc == 4){//Cefalometrico
-            if(chCefalometrico.isSelected()){//true
+        } else if (opc == 4) {//Cefalometrico
+            if (chCefalometrico.isSelected()) {//true
                 chCefalometricoTodas.setEnabled(true);
-            }else{
+            } else {
                 chCefalometricoTodas.setEnabled(false);
                 chCefalometricoTodas.setSelected(false);
             }
@@ -1445,113 +1438,107 @@ public class VentanaInformes extends javax.swing.JFrame {
     }
 
     private void MostrarOpcDemandaInd() {
-        try{
+        try {
             jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
             jLabel1.setForeground(new java.awt.Color(21, 67, 96));
             jLabel1.setText("Opciones");
 
             jdFechafinal.setForeground(new java.awt.Color(21, 67, 96));
             jdFechainicial.setForeground(new java.awt.Color(21, 67, 96));
-            jdFechafinal.setDateFormatString("dd/MM/yyyy");  
+            jdFechafinal.setDateFormatString("dd/MM/yyyy");
             jdFechainicial.setDateFormatString("dd/MM/yyyy");
 
             lblFechafinal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             lblFechafinal.setForeground(new java.awt.Color(21, 67, 96));
-            lblFechafinal.setText("Fecha Fin:"); 
+            lblFechafinal.setText("Fecha Fin:");
 
             lblFechainicial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             lblFechainicial.setForeground(new java.awt.Color(21, 67, 96));
             lblFechainicial.setText("Fecha Inicio:");
-            
+
             System.out.println("MostrarOpcHistClinica-----");
-           
+
             chPanoramica.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chPanoramica.setForeground(new java.awt.Color(21, 67, 96));
             chPanoramica.setBackground(new java.awt.Color(255, 255, 255));
             chPanoramica.setText("Ausentes");
             chPanoramica.setSelected(true);
-            
+
             jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel2.setForeground(new java.awt.Color(21, 67, 96));
             jLabel2.setText("Filtro");
-            
-            
+
             chRadiografia.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chRadiografia.setForeground(new java.awt.Color(21, 67, 96));
             chRadiografia.setBackground(new java.awt.Color(255, 255, 255));
             chRadiografia.setText("Cancelados");
             chRadiografia.setSelected(true);
 
-
             chOdontograma.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
             chOdontograma.setForeground(new java.awt.Color(21, 67, 96));
             chOdontograma.setBackground(new java.awt.Color(255, 255, 255));
             chOdontograma.setText("Atendidos");
             chOdontograma.setSelected(true);
-            
-            
 
             javax.swing.GroupLayout PanelOpcionesLayout = new javax.swing.GroupLayout(PanelOpciones);
             PanelOpciones.setLayout(PanelOpcionesLayout);
             PanelOpcionesLayout.setHorizontalGroup(
-                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(32, 32, 32)
-                            .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
-                        .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                            .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                    .addGap(171, 171, 171)
-                                    .addComponent(jLabel1))
-                                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(jLabel2)
-                                    .addGap(48, 48, 48)
+                    PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
                                     .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(chPanoramica)
-                                        .addComponent(chRadiografia)
-                                        .addComponent(chOdontograma))))
-                            .addGap(0, 0, Short.MAX_VALUE)))
-                    .addContainerGap())
+                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                    .addContainerGap()
+                                                    .addComponent(lblFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(32, 32, 32)
+                                                    .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jdFechafinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                    .addGap(171, 171, 171)
+                                                                    .addComponent(jLabel1))
+                                                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                                                    .addContainerGap()
+                                                                    .addComponent(jLabel2)
+                                                                    .addGap(48, 48, 48)
+                                                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                            .addComponent(chPanoramica)
+                                                                            .addComponent(chRadiografia)
+                                                                            .addComponent(chOdontograma))))
+                                                    .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addContainerGap())
             );
             PanelOpcionesLayout.setVerticalGroup(
-                PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(jLabel1)
-                    .addGap(32, 32, 32)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblFechainicial)
-                            .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
-                            .addGap(15, 15, 15)
-                            .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(18, 18, 18)
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2)
-                        .addComponent(chPanoramica))
-                    .addGap(15, 15, 15)
-                    .addComponent(chRadiografia)
-                    .addGap(18, 18, 18)
-                    .addComponent(chOdontograma)
-                    .addContainerGap(157, Short.MAX_VALUE))
+                    PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                    .addGap(21, 21, 21)
+                                    .addComponent(jLabel1)
+                                    .addGap(32, 32, 32)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jdFechainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(lblFechainicial)
+                                                    .addComponent(jdFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
+                                                    .addGap(15, 15, 15)
+                                                    .addComponent(lblFechafinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(chPanoramica))
+                                    .addGap(15, 15, 15)
+                                    .addComponent(chRadiografia)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(chOdontograma)
+                                    .addContainerGap(157, Short.MAX_VALUE))
             );
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    
-}
 
+}

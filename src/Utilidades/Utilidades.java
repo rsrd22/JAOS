@@ -4,7 +4,11 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -17,12 +21,11 @@ public class Utilidades {
     public static String TEXTO_SIN_NUMEROS = "\\d";
     public static String SOLO_NUMEROS = "^[0-9]+$";
     public static String PACIENTES_AUXILIARES_OCASIONALES = "^[A|O]$";
-    
-    public static void EstablecerIcono(JFrame vent){
+
+    public static void EstablecerIcono(JFrame vent) {
         vent.setIconImage(Toolkit.getDefaultToolkit().getImage(vent.getClass().getResource("/img/Logo.png")));
     }
-    
-    
+
     public static void guardarImagen(BufferedImage bi, String imagen) {
         try {
             ImageIO.write(bi, Expresiones.obtenerExtension(imagen), new File(imagen));
@@ -33,7 +36,7 @@ public class Utilidades {
                     + "" + ex.getMessage());
         }
     }
-    
+
     public static ArrayList<String> decodificarNombre(String nombre) {
         do {
             nombre = nombre.replace("  ", " ");
@@ -127,7 +130,7 @@ public class Utilidades {
     }
 
     public static String CodificarElemento(String dato) {
-        try {  
+        try {
 
             dato = "" + dato + "";
             dato = dato.replace("Â", "");//espacios en blanco
@@ -138,25 +141,25 @@ public class Utilidades {
             dato = dato.replace("Ãº", "ú");
             dato = dato.replace("Ã±", "ñ");
             dato = dato.replace("Ã?", "Ñ");
-            
+
             dato = dato.replace("á", "_at_");
             dato = dato.replace("é", "_et_");
             dato = dato.replace("í", "_it_");
             dato = dato.replace("ó", "_ot_");
             dato = dato.replace("ú", "_ut_");
-            
+
             dato = dato.replace("Á", "_At_");
             dato = dato.replace("É", "_Et_");
             dato = dato.replace("Í", "_It_");
             dato = dato.replace("Ó", "_Ot_");
             dato = dato.replace("Ú", "_Ut_");
-            
+
             dato = dato.replace("¿", "_INTEa_");
             dato = dato.replace("?", "_INTEc_");
-            
+
             dato = dato.replace("ñ", "_enie_");
             dato = dato.replace("Ñ", "_ENIE_");
-            
+
             dato = dato.replace("\"", "_CD_");//COMILLAS DOBLES.."&quot;");//COMILLAS DOBLES..
             dato = dato.replace("<", "_dx_");//menorque..
             dato = dato.replace(">", "_bx_");//menorque..
@@ -168,49 +171,47 @@ public class Utilidades {
             dato = dato.replace("%", "_P_");//PORCENTA.....
             //HTML = HTML.replace("_L_n", "<br/>");//ESLAS.....
             dato = dato.replace("\\", "_L_");//ESLAS.....
-            dato = dato.replace("&","_A_");//AMPERSAN.....Â
+            dato = dato.replace("&", "_A_");//AMPERSAN.....Â
             dato = dato.replace("°", "_Ord_");//°   
-            
-            //  alert(HTML);
 
+            //  alert(HTML);
         } catch (Exception e) {
             System.out.println("ERROR decodificarElemento()-->" + e.toString());
         }
 
         return dato;
     }
-    
+
     public static boolean validarSoloNumeros(String texto) {
-       Pattern p = Pattern.compile(SOLO_NUMEROS);
-       Matcher m = p.matcher(texto);
-       return m.find();
-   }
-    
-    public static void validarNumeroEncampodeTexto(JTextField campo){
-       if (validarSoloNumeros(campo.getText())){
+        Pattern p = Pattern.compile(SOLO_NUMEROS);
+        Matcher m = p.matcher(texto);
+        return m.find();
+    }
+
+    public static void validarNumeroEncampodeTexto(JTextField campo) {
+        if (validarSoloNumeros(campo.getText())) {
             campo.setText(campo.getText());
-        }else{
-             campo.setText(campo.getText().substring(0,campo.getText().length()-1));
+        } else {
+            campo.setText(campo.getText().substring(0, campo.getText().length() - 1));
         }
-   }
+    }
 
     public static String MascaraMoneda(String dato) {
         String ret = "";
         int con = 0;
-        for(int i = dato.length()-1; i >= 0; i--){            
-            
-            if(con%3 == 0 && con > 0){
-                ret = "."+ret;
+        for (int i = dato.length() - 1; i >= 0; i--) {
+
+            if (con % 3 == 0 && con > 0) {
+                ret = "." + ret;
                 con = 0;
             }
-            ret = ""+dato.charAt(i)+ret;
+            ret = "" + dato.charAt(i) + ret;
             con++;
-            
+
         }
         return ret;
     }
 
-    
     public String convertirNumeroEnLetras(int numero) {
         String moneda = "";
 
@@ -223,35 +224,35 @@ public class Utilidades {
         return numeroEnLetras(numero) + moneda;
 
     }
-    
-    public static String formatomoneda(String costo) {
-          String caux = "";
-          String cfin = "";
-          int control = 0;
-          boolean entero = validarSoloNumeros(costo);
 
-          if (!costo.equals("") && entero) {
-              Pattern pat = Pattern.compile("^[0-9]+$");
-              Matcher mat = pat.matcher(costo);
-              if (mat.matches()) {
-                  System.out.println("SI");
-                  for (int i = costo.length() - 1; i >= 0; i--) {
-                      control++;
-                      caux += costo.charAt(i);
-                      if (control % 3 == 0 && i != 0) {
-                          caux += ".";
-                      }
-                  }
-                  for (int j = caux.length() - 1; j >= 0; j--) {
-                      cfin += caux.charAt(j);
-                  }
-                  return ("$ " + cfin);
-              } else {
-                  return "";
-              }
-          }
-          return "";
-      }
+    public static String formatomoneda(String costo) {
+        String caux = "";
+        String cfin = "";
+        int control = 0;
+        boolean entero = validarSoloNumeros(costo);
+
+        if (!costo.equals("") && entero) {
+            Pattern pat = Pattern.compile("^[0-9]+$");
+            Matcher mat = pat.matcher(costo);
+            if (mat.matches()) {
+                System.out.println("SI");
+                for (int i = costo.length() - 1; i >= 0; i--) {
+                    control++;
+                    caux += costo.charAt(i);
+                    if (control % 3 == 0 && i != 0) {
+                        caux += ".";
+                    }
+                }
+                for (int j = caux.length() - 1; j >= 0; j--) {
+                    cfin += caux.charAt(j);
+                }
+                return ("$ " + cfin);
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
 
     public static String numeroEnLetras(int numero) {
         String[] Unidades, Decenas, Centenas;
@@ -260,7 +261,7 @@ public class Utilidades {
         /**
          * ************************************************
          * Nombre de los números
-        *************************************************
+         * ************************************************
          */
         Unidades = new String[]{"", "Un", "Dos", "Tres", "Cuatro", "Cinco", "Seis", "Siete", "Ocho", "Nueve", "Diez", "Once", "Doce", "Trece", "Catorce", "Quince", "Dieciséis", "Diecisiete", "Dieciocho", "Diecinueve", "Veinte", "Veintiuno", "Veintidos", "Veintitres", "Veinticuatro", "Veinticinco", "Veintiseis", "Veintisiete", "Veintiocho", "Veintinueve"};
         Decenas = new String[]{"", "Diez", "Veinte", "Treinta", "Cuarenta", "Cincuenta", "Sesenta", "Setenta", "Ochenta", "Noventa", "Cien"};
@@ -321,10 +322,10 @@ public class Utilidades {
         }
         return Resultado;
     }
-    
+
     public static String[] obtenerDocumentoyTipoDoc(String TID) {
-        String tipoydoc[] = new String[]{"",""};
-        for (int i = 0; i < TID.length(); i++) { 
+        String tipoydoc[] = new String[]{"", ""};
+        for (int i = 0; i < TID.length(); i++) {
             if (Expresiones.validarSoloNumeros("" + TID.charAt(i))) {
                 tipoydoc[0] = TID.substring(0, i);
                 tipoydoc[1] = TID.substring(i);
@@ -333,29 +334,53 @@ public class Utilidades {
         }
         return tipoydoc;
     }
-    
-    public static String CapitaliceTexto(String texto){
-        try{
+
+    public static String CapitaliceTexto(String texto) {
+        try {
             String[] info = texto.trim().toLowerCase().replace(" ", ":").split(":");
             String ret = "";
-            System.out.println("*********************CapitaliceTexto********************"+texto+"**********");
-            String inf ="";
-            for (int i = 0; i < info.length; i++) { 
-                inf =info[i];
-                if(!inf.trim().equals("")){
-                    String ini = ""+inf.charAt(0);
+            System.out.println("*********************CapitaliceTexto********************" + texto + "**********");
+            String inf = "";
+            for (int i = 0; i < info.length; i++) {
+                inf = info[i];
+                if (!inf.trim().equals("")) {
+                    String ini = "" + inf.charAt(0);
                     String fin = inf.substring(1);
-                    System.out.println("ini-->"+ini);
-                    System.out.println("fin-->"+fin);
-                    ret += (ret.equals("")?"":" ") +  ini.toUpperCase() + fin;
+                    System.out.println("ini-->" + ini);
+                    System.out.println("fin-->" + fin);
+                    ret += (ret.equals("") ? "" : " ") + ini.toUpperCase() + fin;
                 }
             }
             System.out.println("***END***");
             return ret;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
-    
+
+    public static Date getDateFromFormat(String strDate, String format) {
+
+        SimpleDateFormat formatterDate = new SimpleDateFormat(
+                format, Locale.forLanguageTag("es-CO")
+        );
+
+        try {
+            return formatterDate.parse(strDate);
+        } catch (ParseException ex) {
+            return null;
+        }
+
+    }
+
+    public static String getDateToShow(Date date, String format) {
+
+        SimpleDateFormat formatterDate = new SimpleDateFormat(
+                format, Locale.forLanguageTag("es-CO")
+        );
+
+        return formatterDate.format(date);
+
+    }
+
 }

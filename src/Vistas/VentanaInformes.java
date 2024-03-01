@@ -8,12 +8,17 @@ package Vistas;
 import Busquedas.ventanaBusquedapacienteinf;
 import Informes.Descripcioninformespdf;
 import Utilidades.Utilidades;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -23,6 +28,9 @@ import javax.swing.SwingConstants;
  * @author Acer
  */
 public class VentanaInformes extends javax.swing.JFrame {
+
+    private static final String MESSAGE_DATES_NOT_SET = "Por favor diligencie "
+            + "la(s) fecha(s) para poder generar el informe";
 
     public ArrayList<int[]> listaPosiciones;
     public ArrayList<String[]> listacategorias = new ArrayList<>();
@@ -361,125 +369,141 @@ public class VentanaInformes extends javax.swing.JFrame {
                 list.put("ffin", "" + ffin);
                 list.put("rHist", "" + rbInfohistorico.isSelected());
             }
-//            }else if(inf == 2){//Historias Inactivas
-//                String fini = "";
-//                String ffin ="";
-//                if(jdFechainicial.getCalendar() != null){
-//                    fini = ""+sdf.format(jdFechainicial.getCalendar().getTime());
-//                }
-//                System.out.println("fini-.-"+ fini+"///");
-//                list.put("fini", ""+fini);
-//                  if(jdFechafinal.getCalendar() != null){
-//                    ffin = ""+sdf.format(jdFechafinal.getCalendar().getTime());
-//                }
-//                System.out.println("ffin-.-"+ ffin+"///");
-//                list.put("ffin", ""+ffin);
-//                list.put("rHist",""+rbInfohistorico.isSelected());
-//            }
         } else if (cat == 2) {
             if (inf == 0) {//Estados
-                list.put("tipo", "" + cbBandera.getSelectedItem());
 
-                if (jdFechainicial.getCalendar() == null) {
+                String initialDate = getDateByControl(jdFechainicial);
+                String finalDate = getDateByControl(jdFechafinal);
+
+                if (cbBandera.getSelectedIndex() == 0) {
                     JOptionPane.showMessageDialog(
                             null,
-                            "Por favor ingrese la fecha inicial para generar"
-                            + " el informe"
+                            "Seleccione un estado para poder generar el informe."
                     );
                     return;
                 }
 
-                if (jdFechafinal.getCalendar() == null) {
+                if (areDatesInvalid(Arrays.asList(initialDate, finalDate))) {
                     JOptionPane.showMessageDialog(
                             null,
-                            "Por favor ingrese la fecha final para generar "
-                            + "el informe"
+                            MESSAGE_DATES_NOT_SET
                     );
                     return;
                 }
-                String fini = sdf.format(jdFechainicial.getCalendar().getTime());
-                String ffin = sdf.format(jdFechafinal.getCalendar().getTime());
 
-                list.put("fini", fini);
-                list.put("ffin", ffin);
+                list.put("fini", initialDate);
+                list.put("ffin", finalDate);
+                list.put("tipo", cbBandera.getSelectedItem().toString());
                 list.put("rHist", String.valueOf(rbInfohistorico.isSelected()));
-                
-                System.out.println("list: "+ list.toString());
+
+                System.out.println(
+                        "invoice by state - listMap: " + list.toString()
+                );
             } else if (inf == 1) {//Facturas por Mes
-                if (jdFechainicial.isValid()) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
+
+                String initialDate = getDateByControl(jdFechainicial);
+                String finalDate = getDateByControl(jdFechafinal);
+
+                Date time = jdFechainicial.getCalendar().getTime();
+
+                if (areDatesInvalid(Arrays.asList(initialDate, finalDate))) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            MESSAGE_DATES_NOT_SET
+                    );
                     return;
                 }
-                if (jdFechafinal.isValid()) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
-                    return;
-                }
-                String fini = "";
-                String ffin = "";
-                if (jdFechainicial.getCalendar() != null) {
-                    fini = "" + sdf.format(jdFechainicial.getCalendar().getTime());
-                }
-                System.out.println("fini-.-" + fini + "///");
-                list.put("fini", "" + fini);
-                if (jdFechafinal.getCalendar() != null) {
-                    ffin = "" + sdf.format(jdFechafinal.getCalendar().getTime());
-                }
-                System.out.println("ffin-.-" + ffin + "///");
-                list.put("ffin", "" + ffin);
+
+                list.put("fini", initialDate);
+                list.put("ffin", finalDate);
                 list.put("rHist", "" + rbInfohistorico.isSelected());
+
+                System.out.println(
+                        "invoice by month - listMap: " + list.toString()
+                );
+
             } else if (inf == 2) {//Recaudo por Dia
-                if (jdFechainicial.isValid()) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha para generar el informe");
+
+                String initialDate = getDateByControl(jdFechainicial);
+
+                if (areDatesInvalid(Arrays.asList(initialDate))) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            MESSAGE_DATES_NOT_SET
+                    );
                     return;
                 }
-                list.put("fini", "" + sdf.format(jdFechainicial.getCalendar().getTime()));
+
+                list.put("fini", initialDate);
+
+                System.out.println(
+                        "invoice by day - listMap: " + list.toString()
+                );
+
             } else if (inf == 3) {//Recaudo por Mes
-                if (jdFechainicial.isValid()) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
+
+                String initialDate = getDateByControl(jdFechainicial);
+                String finalDate = getDateByControl(jdFechafinal);
+
+                if (areDatesInvalid(Arrays.asList(initialDate, finalDate))) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            MESSAGE_DATES_NOT_SET
+                    );
                     return;
                 }
-                if (jdFechafinal.isValid()) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
-                    return;
-                }
-                String fini = "";
-                String ffin = "";
-                if (jdFechainicial.getCalendar() != null) {
-                    fini = "" + sdf.format(jdFechainicial.getCalendar().getTime());
-                }
-                System.out.println("fini-.-" + fini + "///");
-                list.put("fini", "" + fini);
-                if (jdFechafinal.getCalendar() != null) {
-                    ffin = "" + sdf.format(jdFechafinal.getCalendar().getTime());
-                }
-                System.out.println("ffin-.-" + ffin + "///");
-                list.put("ffin", "" + ffin);
+
+                list.put("fini", initialDate);
+                list.put("ffin", finalDate);
                 list.put("rHist", "" + rbInfohistorico.isSelected());
+
+                System.out.println(
+                        "collection by month - listMap: " + list.toString()
+                );
+
             } else if (inf == 4) {//Recaudo Tipo Pago
-                if (jdFechainicial.isValid()) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha inicial para generar el informe");
+
+                String initialDate = getDateByControl(jdFechainicial);
+                String finalDate = getDateByControl(jdFechafinal);
+
+                if (cbBandera.getSelectedIndex() == 0) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Seleccione el tipo de pago para poder"
+                            + " generar el informe."
+                    );
                     return;
                 }
-                if (jdFechafinal.isValid()) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese la fecha final para generar el informe");
+
+                if (areDatesInvalid(Arrays.asList(initialDate, finalDate))) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            MESSAGE_DATES_NOT_SET
+                    );
                     return;
                 }
+
+                list.put("fini", initialDate);
+                list.put("ffin", finalDate);
                 list.put("tipo", "" + cbBandera.getSelectedItem());
-                String fini = "";
-                String ffin = "";
-                if (jdFechainicial.getCalendar() != null) {
-                    fini = "" + sdf.format(jdFechainicial.getCalendar().getTime());
-                }
-                System.out.println("fini-.-" + fini + "///");
-                list.put("fini", "" + fini);
-                if (jdFechafinal.getCalendar() != null) {
-                    ffin = "" + sdf.format(jdFechafinal.getCalendar().getTime());
-                }
-                System.out.println("ffin-.-" + ffin + "///");
-                list.put("ffin", "" + ffin);
                 list.put("rHist", "" + rbInfohistorico.isSelected());
+
+                System.out.println(
+                        "collection by payment type - listMap: "
+                        + list.toString()
+                );
+
             } else if (inf == 5) {//Abono por Pacientes
-                list.put("idpac", "" + lblIdPaciente.getText());
+
+                if (lblIdPaciente.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Seleccione un paciente para generar el informe"
+                    );
+                    return;
+                }
+
+                list.put("idpac", lblIdPaciente.getText());
             }
         } else if (cat == 3) {
             if (inf == 0) {//Pacientes Auxiliares
@@ -1539,6 +1563,24 @@ public class VentanaInformes extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String getDateByControl(JDateChooser jdc) {
+
+        return jdc.getCalendar() == null
+                ? ""
+                : sdf.format(jdc.getCalendar().getTime());
+
+    }
+
+    private boolean areDatesInvalid(List<String> listOfDates) {
+
+        List<String> emptyDates = listOfDates.stream()
+                .filter(String::isEmpty)
+                .collect(Collectors.toList());
+
+        return !emptyDates.isEmpty();
+
     }
 
 }

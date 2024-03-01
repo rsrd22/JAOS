@@ -41,7 +41,7 @@ public class Descripcioninformespdf {
     String path = "";
     Informespdf pdf = new Informespdf();
     private static final String FORMAT_DATE_INPUT = "yyyy-MM-dd";
-    private static final String FORMAT_DATE_OUTPUT = "EEEEE, d MMMMM yyyy";
+    private static final String FORMAT_DATE_OUTPUT = "EEEEE, d 'de' MMMMM 'del' yyyy";
 
     ControlGeneral gen = new ControlGeneral();
 
@@ -169,59 +169,62 @@ public class Descripcioninformespdf {
         try {
             int categoria = Integer.parseInt(list.get("cat"));
             int informe = Integer.parseInt(list.get("inf"));
-            IMPRIMIR(" ####### GENERAR INFROME (presente) ######### " + categoria + "%%%%%%%" + informe);
+            
             String ret = "";
             String encode = Encode();
 
             Rectangle papel = null;
-            String Titulo = "";
+            String titulo = "";
             String entidad = "", pac = "";
             if (categoria == 0 && informe == 0) {
-                Titulo = "Citas Diarias";
+                titulo = "Citas Diarias";
             } else if (categoria == 0 && informe == 1) {
-                Titulo = "Historico Citas";
+                titulo = "Historico Citas";
             } else if (categoria == 0 && informe == 2) {
-                Titulo = "Demanda Inducida";
+                titulo = "Demanda Inducida";
             } else if (categoria == 1 && informe == 0) {
-                Titulo = "";
+                titulo = "";
                 pac = resultquery.unicoDato("SELECT REPLACE(CONCAT_WS(' ', primer_nombre, IFNULL(segundo_nombre, ''), primer_apellido, IFNULL(segundo_apellido, '')), '  ', ' ')\n"
                         + "FROM personas WHERE CONCAT(`pfk_tipo_documento`,`pk_persona`) = '" + list.get("idpac") + "'");
             } else if (categoria == 1 && informe == 1) {
-                Titulo = "Historias Cerradas";
+                titulo = "Historias Cerradas";
             } //            else if (categoria == 1 && informe == 2) {
             //                Titulo = "Historias Inactivas";
             //            }
             else if (categoria == 2 && informe == 0) {
-                Titulo = "Facturas por Estados";
+                titulo = "Facturas por Estados";
             } else if (categoria == 2 && informe == 1) {
-                Titulo = "Facturas por Mes";
+                titulo = "Facturas por Mes";
             } else if (categoria == 2 && informe == 2) {
-                Titulo = "Facturas por Día";
+                titulo = "Facturas por Día";
             } else if (categoria == 2 && informe == 3) {
-                Titulo = "Recaudo Mensual";
+                titulo = "Recaudo Mensual";
             } else if (categoria == 2 && informe == 4) {
-                Titulo = "Recaudo Tipo Pago";
+                titulo = "Recaudo Tipo Pago";
             } else if (categoria == 2 && informe == 5) {
-                Titulo = "Abonos por Paciente";
+                titulo = "Abonos por Paciente";
             } else if (categoria == 3 && informe == 0) {
-                Titulo = "Pacientes Auxiliares";
+                titulo = "Pacientes Auxiliares";
             } else if (categoria == 3 && informe == 1) {
-                Titulo = "Pacientes Activos";
+                titulo = "Pacientes Activos";
             } //            else if (categoria == 3 && informe == 2) {
             //                Titulo = "Pacientes Terminados";
             //            } 
             else if (categoria == 3 && informe == 2) {
-                Titulo = "Pacientes por Terminar";
+                titulo = "Pacientes por Terminar";
             }
+            
+            list.put("title", titulo);
 
-            String ruta = Parametros.dirInformes + Titulo.replaceAll(" ", "_") + encode + ".pdf";
+            String ruta = Parametros.dirInformes + titulo.replaceAll(" ", "_") + encode + ".pdf";
             FileOutputStream archivo = new FileOutputStream(ruta);
 
-            PdfPTable Encabezado = getEncabezadoF(Titulo);
+            PdfPTable Encabezado = getEncabezadoF(titulo);
 
             if (categoria == 1 && informe == 0) {//Historia Clinica
-                Encabezado = getEncabezadoxPaciente(Titulo, 16, pac);
+                Encabezado = getEncabezadoxPaciente(titulo, 16, pac);
             }
+
             PdfPTable piepagina = getPie();
             Informespdf pdf = new Informespdf(Encabezado, piepagina);
 
@@ -310,9 +313,7 @@ public class Descripcioninformespdf {
 
         String funcion = "getEncabezadoF()";
         boolean probar = true;
-//        Conectar();
-        //PDF pdf=new PDF();
-        IMPRIMIR("***** ***** ***** ***** ENCABEZADO PARA INFORMES ***** ***** ***** ***** ");
+        System.out.println("==[ begin header ]==");
 
         Image m1 = null;
         try {
@@ -320,7 +321,7 @@ public class Descripcioninformespdf {
         } catch (Exception ex) {
             System.err.println("Error: " + ex.getMessage());
         }
-//            Image m1 = Image.getInstance("D:/Recursos/Logo75.png");
+
         float m1w, m1h, m2w, m2h;
         m1w = m1h = m2w = m2h = 75;
         PdfPTable tablaEncabezado = null;
@@ -390,37 +391,6 @@ public class Descripcioninformespdf {
         celda.setBorder(0);
         tabla.addCell(celda);
 
-        //DIREEIONCS
-//                System.out.println("adicion-->"+adicion);
-//                if (adicion.split("<>")[0].equals("1") && !rs.getString("DIR").trim().equals("")) {
-//                    celda = new PdfPCell(new Phrase("DirecciÃ³n: "+general.decodificarElemento(rs.getString("DIR")), pdf.font8));
-//                    celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                    celda.setVerticalAlignment(Element.ALIGN_TOP);
-//                    celda.setBorder(0);
-//                    tabla.addCell(celda);
-////                }
-//                //TELEFOANSI
-////                if (adicion.split("<>")[1].equals("1")) {
-//                    String telf = rs.getString("TEL").trim(); 
-//                    String cel = rs.getString("CEL").trim();
-//                    String dato = telf+(telf.equals("")?"":(cel.equals("")?"":" - "))+cel;
-//                    String opc = (telf.equals("")?(cel.equals("")?"0":"2"):(cel.equals("")?"1":"3"));//3los dos
-//                    
-//                    if(!dato.equals("")){
-//                        celda = new PdfPCell(new Phrase((opc.equals("3")?"Telefonos: ":(opc.equals("2")?"Celular: ":(opc.equals("1")?"Telefono: ":"")))+dato, pdf.font8));
-//                        celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                        celda.setVerticalAlignment(Element.ALIGN_TOP);
-//                        celda.setBorder(0);
-//                        tabla.addCell(celda);
-//                    }
-//                }
-//                if (!rs.getString("NIT").equals("")) {
-//                    celda = new PdfPCell(new Phrase("NIT " + general.decodificarElemento(rs.getString("NIT")), pdf.font8));
-//                    celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                    celda.setVerticalAlignment(Element.ALIGN_TOP);
-//                    celda.setBorder(0);
-//                    tabla.addCell(celda);
-//                }
         //IMPRIMIR(funcion, "2.3 Se agrega la informaciÃƒÆ’Ã‚Â³n a una tabla.", probar);
         celda = new PdfPCell(tabla);
         celda.setColspan(3);
@@ -462,23 +432,10 @@ public class Descripcioninformespdf {
             celda.setBorder(0);
             tablaEncabezado.addCell(celda);
 
-//                    celda = new PdfPCell(new Phrase(" ", pdf.font2));
-//                    celda.setColspan(col);
-//                    celda.setBorder(0);
-//                    tablaEncabezado.addCell(celda);
         }
-        System.out.println("*********************END ENCABEZADO***************************");
+        System.out.println("==[ end header ]==");
         return tablaEncabezado;
 
-//        } catch (Exception ex) {
-//            //IMPRIMIR(funcion, "    ERROR: " + ex, probar);
-//            System.out.println("ERROR --ENCABEZADO--> "+ex.toString());
-//            ex.printStackTrace();
-////            SendMail ml = new SendMail();
-////            ml.EnviarEmail("PACIENTE", "rsrd22@gmail.com", "PRUEBA ENCABEZADO", "ESTE MENSAJE ES PARA PROBAR LO QUE PASA EN ENCABEZADO\n"+ex.toString());
-//            
-//            return new PdfPTable(1);
-//        }
     }
 
     public PdfPTable getEncabezadoxPaciente(
@@ -487,9 +444,6 @@ public class Descripcioninformespdf {
 
         String funcion = "getEncabezadoF()";
         boolean probar = true;
-//        Conectar();   
-        //PDF pdf=new PDF();
-        IMPRIMIR("***** ***** ***** ***** ENCABEZADO PARA INFORMES ***** ***** ***** ***** ");
         try {
             ///img/add concepto.png
             Image m1 = Image.getInstance("Z:/Recursos/img/Logo.png");
@@ -563,37 +517,6 @@ public class Descripcioninformespdf {
             celda.setBorder(0);
             tabla.addCell(celda);
 
-            //DIREEIONCS
-//                System.out.println("adicion-->"+adicion);
-//                if (adicion.split("<>")[0].equals("1") && !rs.getString("DIR").trim().equals("")) {
-//                    celda = new PdfPCell(new Phrase("DirecciÃ³n: "+general.decodificarElemento(rs.getString("DIR")), pdf.font8));
-//                    celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                    celda.setVerticalAlignment(Element.ALIGN_TOP);
-//                    celda.setBorder(0);
-//                    tabla.addCell(celda);
-////                }
-//                //TELEFOANSI
-////                if (adicion.split("<>")[1].equals("1")) {
-//                    String telf = rs.getString("TEL").trim(); 
-//                    String cel = rs.getString("CEL").trim();
-//                    String dato = telf+(telf.equals("")?"":(cel.equals("")?"":" - "))+cel;
-//                    String opc = (telf.equals("")?(cel.equals("")?"0":"2"):(cel.equals("")?"1":"3"));//3los dos
-//                    
-//                    if(!dato.equals("")){
-//                        celda = new PdfPCell(new Phrase((opc.equals("3")?"Telefonos: ":(opc.equals("2")?"Celular: ":(opc.equals("1")?"Telefono: ":"")))+dato, pdf.font8));
-//                        celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                        celda.setVerticalAlignment(Element.ALIGN_TOP);
-//                        celda.setBorder(0);
-//                        tabla.addCell(celda);
-//                    }
-//                }
-//                if (!rs.getString("NIT").equals("")) {
-//                    celda = new PdfPCell(new Phrase("NIT " + general.decodificarElemento(rs.getString("NIT")), pdf.font8));
-//                    celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                    celda.setVerticalAlignment(Element.ALIGN_TOP);
-//                    celda.setBorder(0);
-//                    tabla.addCell(celda);
-//                }
             //IMPRIMIR(funcion, "2.3 Se agrega la informaciÃƒÆ’Ã‚Â³n a una tabla.", probar);
             celda = new PdfPCell(tabla);
             celda.setColspan(3);
@@ -614,10 +537,6 @@ public class Descripcioninformespdf {
                 celda.setBorder(0);
                 tablaEncabezado.addCell(celda);
 
-//                    celda = new PdfPCell(new Phrase(" ", pdf.font2));
-//                    celda.setColspan(col);
-//                    celda.setBorder(0);
-//                    tablaEncabezado.addCell(celda);
             }
             System.out.println("*********************END ENCABEZADO***************************");
             return tablaEncabezado;
@@ -3468,20 +3387,6 @@ public class Descripcioninformespdf {
             ArrayList<String[]> resc = resultquery.SELECT(cons);
             IMPRIMIR("resotadpo consulya" + resc);
             PdfPCell celda = null;
-//            float[] tamp =  new float[100/5];
-//            for(int i = 0; i < tamp.length; i++){
-//                tamp[i] = 5;
-//            }
-//            PdfPTable tablap = new PdfPTable(tamp);
-//            tablap.setWidthPercentage(100);
-//            for(int i = 0; i < tamp.length; i++){
-//                celda = new PdfPCell(new Phrase(" ", pdf.font10n));
-//                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                celda.setVerticalAlignment(Element.ALIGN_CENTER);
-//                celda.setBorder(15);
-//                tablap.addCell(celda);
-//            }
-//            documento.add(tablap);
 
             float[] tam = new float[]{5, 15, 30, 10, 10, 10, 20};
 
@@ -3614,8 +3519,7 @@ public class Descripcioninformespdf {
 
     private void infFactpormes(Document documento, Map<String, String> list) {
         try {
-            IMPRIMIR("+++++ ENTRE?");
-            IMPRIMIR("==================" + list.get("rHist"));
+            
             String consulta = "", add = "";
 
             if (list.get("rHist").equals("false")) {
@@ -3630,15 +3534,43 @@ public class Descripcioninformespdf {
                     + "LEFT JOIN paciente_auxiliar paux ON fac.pfk_paciente = paux.pk_paciente_auxiliar AND paux.estado = 'Activo'\n"
                     + "WHERE " + add + " \n"
                     + "IF(paux.pk_paciente_auxiliar IS NULL, CONCAT(per.`pfk_tipo_documento`, per.`pk_persona`), paux.`pk_paciente_auxiliar`) IS NOT NULL\n ORDER BY fac.`numero` ASC";
-            IMPRIMIR("¡=)?)=)=)=)" + consulta);
+            
             ArrayList<String[]> resql = resultquery.SELECT(consulta);
 
-            IMPRIMIR("#########" + resql);
             PdfPCell celda = null;
             float[] tam = new float[]{10, 30, 20, 15, 15, 10};
 
             PdfPTable tabla = new PdfPTable(tam);
             tabla.setWidthPercentage(100);
+            
+            Date initDate = Utilidades.getDateFromFormat(
+                    list.get("fini"), FORMAT_DATE_INPUT
+            );
+            Date finalDate = Utilidades.getDateFromFormat(
+                    list.get("ffin"), FORMAT_DATE_INPUT
+            );
+
+            celda = new PdfPCell(
+                    new Phrase(
+                            String.format(
+                                    "Desde el %s Hasta el %s\n\n",
+                                    Utilidades.getDateToShow(
+                                            initDate, FORMAT_DATE_OUTPUT
+                                    ),
+                                    Utilidades.getDateToShow(
+                                            finalDate, FORMAT_DATE_OUTPUT
+                                    )
+                            ),
+                            pdf.font10
+                    )
+            );
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celda.setVerticalAlignment(Element.ALIGN_CENTER);
+            celda.setBorder(0);
+            celda.setColspan(tam.length);
+            tabla.addCell(celda);
+
+            
             celda = new PdfPCell(new Phrase("N°", pdf.font10n));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -3861,7 +3793,6 @@ public class Descripcioninformespdf {
 
     private void infFactrecmes(Document documento, Map<String, String> list) {
         try {
-            IMPRIMIR("+++++ ENTRE?");
             String consulta = "", add = "";
             PdfPCell celda = null;
             if (list.get("rHist").equals("false")) {
@@ -3890,7 +3821,7 @@ public class Descripcioninformespdf {
             List<Map<String, String>> lista_pagose = new ArrayList<Map<String, String>>();
             List<Map<String, String>> lista_meses = new ArrayList<Map<String, String>>();
             int tote = 0, tott = 0;
-            System.out.println("************************************************\n***************************************************** \n***************************************");
+            
             if (lista.size() > 0) {
                 lista_meses = gen.data_list(10, lista, new String[]{"A", "M"});
                 System.out.println("lista-meses-->" + lista_meses);
@@ -4315,7 +4246,7 @@ public class Descripcioninformespdf {
     private void infFactabonoxpac(Document documento, Map<String, String> list) {
         try {
             String cons = "";
-            IMPRIMIR("???????" + list.get("idpac"));
+            System.out.println("idpac: " + list.get("idpac"));
 
             cons = "SELECT IFNULL(seg.`pfk_tratamiento`, '')  ID_TRA,tra.`descripcion`  DESC_TRA, pac.`pfk_paciente` ID_PAC,\n"
                     + "CONCAT_WS(' ', per.`primer_nombre`, IFNULL(per.`segundo_nombre`,''), per.`primer_apellido`, IFNULL(per.`segundo_apellido`,'')) PACIENTE,\n"
@@ -4368,15 +4299,6 @@ public class Descripcioninformespdf {
                 }
 
                 PdfPTable tabla = new PdfPTable(tami);
-//                tabla.setWidthPercentage(100);
-//                for(int x = 0; x < tami.length; x++){
-//                    celda = new PdfPCell(new Phrase("a ",pdf.font10n));
-//                    
-//                    celda.setBorder(15);
-//                    tabla.addCell(celda);
-//                    
-//                }
-//                documento.add(tabla);
 
                 float[] tam = new float[]{5, 11, 43, 18, 23};
                 tabla = new PdfPTable(tam);
@@ -4443,9 +4365,7 @@ public class Descripcioninformespdf {
                     celda = new PdfPCell(new Phrase("" + Utilidades.MascaraMoneda("" + lista_tratamientos.get(i).get("CUOTA_I")) + " " + cancelada, pdf.font10));
                     celda.setBorder(0);
                     tabla.addCell(celda);
-                    if (abonot >= Integer.parseInt(lista_tratamientos.get(i).get("CUOTA_I"))) {
-
-                    }
+                    
                     if (!lista_tratamientos.get(i).get("COSTO").equals("0")) {
                         celda = new PdfPCell(new Phrase("", pdf.font10n));
                         celda.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -4991,6 +4911,10 @@ public class Descripcioninformespdf {
             e.printStackTrace();
         }
         return ret;
+    }
+
+    private PdfPTable getEncabezadoFacturaPorEstado(Map<String, String> list, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

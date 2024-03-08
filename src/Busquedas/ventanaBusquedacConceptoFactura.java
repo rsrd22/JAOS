@@ -181,15 +181,8 @@ public class ventanaBusquedacConceptoFactura extends javax.swing.JFrame {
                 "WHERE c.`fk_tratamiento` IS NULL  "+in+"  \n" +
                 "UNION \n" +
                 "SELECT c.`pk_concepto`,c.`nombre`,c.`descripcion`,c.`valor`, IFNULL(ar.`pk_articulo`, ''), IFNULL(ar.`nombre`, '') , '1' C, IFNULL(c.`fk_tratamiento`,'') TRATAMIENTO\n" +
-                "FROM pacientextratamiento pt \n" +
-                "INNER JOIN (\n" +
-                "	SELECT pxt.`fk_tratamiento`, pxt.`pfk_paciente`, IFNULL(SUM(abono), 0) abonos, pxt.`costo`, IF(pxt.costo = '0', '1',IF(IFNULL(SUM(abono), 0) <  pxt.`costo`, '1', '0'))  cond\n" +
-                "	FROM `pacientextratamiento` pxt \n" +
-                "	LEFT JOIN `seguimiento_del_tratamiento` seg ON seg.`pfk_paciente` = pxt.`pfk_paciente` AND seg.`pfk_tratamiento` = pxt.`fk_tratamiento`\n" +
-                "	WHERE pxt.`pfk_paciente` = '" + doc + "'\n" +
-                "	GROUP BY pxt.`pfk_paciente`, pxt.`fk_tratamiento`\n" +
-                ")tbl ON tbl.fk_tratamiento = pt.`fk_tratamiento` AND pt.`pfk_paciente` = tbl.pfk_paciente AND tbl.cond = '1'\n" +
-                "INNER JOIN `conceptos` c ON c.`fk_tratamiento` = tbl.fk_tratamiento\n" +
+                "FROM pacientextratamiento pt \n" +                
+                "INNER JOIN `conceptos` c ON c.`fk_tratamiento` = pt.`fk_tratamiento` \n" +
                 "LEFT JOIN `articulo`ar ON c.`fk_articulo`= ar.`pk_articulo`  \n" +
                 "WHERE pt.`estado`= 'Activo' AND  pt.`pfk_paciente`='" + doc + "' "+in+" \n" +
                 "ORDER BY NOMBRE ASC";

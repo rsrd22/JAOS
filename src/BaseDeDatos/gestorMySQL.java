@@ -22,6 +22,7 @@ public class gestorMySQL implements IBaseDeDatos {
         con = null;
         mensaje = "";
 
+//        JAOS
 //        BD = baseDeDatos.JAOSORTODONCIA; 
 //        usuario = baseDeDatos.JAOSUSUARIO;
 //        hostName = baseDeDatos.JAOSERVIDOR;
@@ -32,15 +33,16 @@ public class gestorMySQL implements IBaseDeDatos {
 //        hostName = baseDeDatos.HOST_RASB;
 //        contrasena = baseDeDatos.RASB_PASS; 
         
-        BD = baseDeDatos.ORTODONCIA_P;
+//        BD = baseDeDatos.ORTODONCIA_P;
+//        usuario = baseDeDatos.JAOSUSUARIO;
+//        hostName = baseDeDatos.HOSTLOCAL;
+//        contrasena = baseDeDatos.JAOSPASSWORD;  
+//
+//      PC Kn
+        BD = baseDeDatos.ORTODONCIA;
         usuario = baseDeDatos.JAOSUSUARIO;
         hostName = baseDeDatos.HOSTLOCAL;
-        contrasena = baseDeDatos.JAOSPASSWORD;  
-//
-//        BD = baseDeDatos.ORTODONCIA;
-//        usuario = baseDeDatos.JAOSUSUARIO;
-//        hostName = baseDeDatos.JAOSERVIDOR;
-//        contrasena = baseDeDatos.JAOSPASSWORD;
+        contrasena = baseDeDatos.JAOSPASSWORD;
         
     }
 

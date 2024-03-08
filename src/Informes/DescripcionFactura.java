@@ -26,11 +26,14 @@ import javax.swing.JOptionPane;
 import Vistas.ventanaConsultarF;
 import Utilidades.Utilidades;
 import Utilidades.datosUsuario;
+import com.itextpdf.text.DocumentException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -95,7 +98,7 @@ public class DescripcionFactura {
 
     public void GenerarPdf(  ventanaConsultarF vconsf, int VLORPAG, int cambio, String NumFac) {
     
-        try {
+
 
             ArrayList<String[]> dato = new ArrayList<>();
             String con2 ="SELECT DATE_FORMAT(`fecha`, '%d/%m/%Y') Fecha, DATE_FORMAT(`fecha`,'%h:%i:%s %p') Hora FROM `facturas` WHERE `numero`="+NumFac+"";
@@ -108,9 +111,13 @@ public class DescripcionFactura {
             PdfPTable tabla = new PdfPTable(tam);
             tabla.setWidthPercentage(100);
             
-    //        Image m1 = Image.getInstance("D:/Recursos/LOGO75.png");
-            
-            Image m1 = Image.getInstance("Z:/Recursos/img/iconos/LOGO75.png");
+            Image m1 = null;
+            try {
+                m1 = Image.getInstance("Z:/Recursos/img/iconos/LOGO75.png");
+            } 
+                catch (Exception ex) {
+                 ex.printStackTrace();
+            }
             float m1w, m1h, m2w, m2h;
             m1w = m1h = m2w = m2h = 75;
             
@@ -228,7 +235,11 @@ public class DescripcionFactura {
             tabla.addCell(celda);
       
 
-            documento.add(tabla);   
+            try {   
+                documento.add(tabla);
+            } catch (DocumentException ex) {
+                System.out.println("Error agregando tabla a documento "+ex.getMessage());
+            }
             IMPRIMIR("&&&&&&  HASTA AQUI EL ENCABEZADO  &&&&&&");
             
             IMPRIMIR("+++++ ENTRE?");
@@ -305,7 +316,11 @@ public class DescripcionFactura {
             celda.setColspan(tamp.length);
             tabla1.addCell(celda);
 
-            documento.add(tabla1);
+            try {   
+                documento.add(tabla1);
+            } catch (DocumentException ex) {
+                System.out.println("Error agregando tabla a documento "+ex.getMessage());
+            }
 
             float[] tam2 = new float[]{4,25,12,12 /*10*/};
 
@@ -377,9 +392,11 @@ public class DescripcionFactura {
             celda.setColspan(4);
             tabla2.addCell(celda);
            
-        
-//     
-            documento.add(tabla2);
+            try {   
+                documento.add(tabla2);
+            } catch (DocumentException ex) {
+                System.out.println("Error agregando tabla a documento "+ex.getMessage());
+            }
 
 //            PdfPTable tablaFormadepago = null;
 //
@@ -462,8 +479,11 @@ public class DescripcionFactura {
             celda.setColspan(tam.length);
             tabla3.addCell(celda);
           
-            documento.add(tabla3);
-            
+            try {   
+                documento.add(tabla3);
+            } catch (DocumentException ex) {
+                System.out.println("Error agregando tabla a documento "+ex.getMessage());
+            }          
             
             
             float[] tma = new float[]{20,20};
@@ -604,8 +624,11 @@ public class DescripcionFactura {
             celda.setBorder(0);
             tablaPagos.addCell(celda); 
             
-            documento.add(tablaPagos);
-
+            try {   
+                documento.add(tablaPagos);
+            } catch (DocumentException ex) {
+                System.out.println("Error agregando tabla a documento "+ex.getMessage());
+            }
           
             float[] tm4= new float[]{50};
             PdfPTable tabla4= new PdfPTable(tm4);
@@ -639,17 +662,13 @@ public class DescripcionFactura {
             celda.setColspan(2);
             tabla4.addCell(celda);
             
+            try {   
+                documento.add(tabla4);
+            } catch (DocumentException ex) {
+                System.out.println("Error agregando tabla a documento "+ex.getMessage());
+            }
             
-            documento.add(tabla4);
-            
-             IMPRIMIR("!!!!! SE SUPONE QUE YA LO CREE!!!");
-            
-                      
-        } catch (Exception ex) {
-             ex.printStackTrace();
-             
-        }
-       
+            IMPRIMIR("!!!!! SE SUPONE QUE YA LO CREE!!!");
     }
     
     ////////////////////////////////////////////////////////////////////////////

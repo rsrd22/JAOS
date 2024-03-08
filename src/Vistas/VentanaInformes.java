@@ -38,7 +38,7 @@ public class VentanaInformes extends javax.swing.JFrame {
     public DefaultListModel modlistCategorias;
     public DefaultListModel modlistInformes;
     public Calendar cale;
-    public SimpleDateFormat sdf;
+    public SimpleDateFormat sdf;  
     public Descripcioninformespdf informe;
 
     public javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
@@ -1575,9 +1575,12 @@ public class VentanaInformes extends javax.swing.JFrame {
 
     private boolean areDatesInvalid(List<String> listOfDates) {
 
-        List<String> emptyDates = listOfDates.stream()
-                .filter(String::isEmpty)
-                .collect(Collectors.toList());
+        List<String> emptyDates = new ArrayList<>();
+        for (String emptyDate : listOfDates) {
+            if(emptyDate.equals("")){
+                emptyDates.add(emptyDate);
+            }
+        }
 
         return !emptyDates.isEmpty();
 

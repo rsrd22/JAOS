@@ -422,7 +422,8 @@ public class ventanainiciarsesion extends javax.swing.JFrame {
     }
 
     private void habilitarUnidadDeRed() {
-        File unidadDeRed = new File("Z:\\");
+        //File unidadDeRed = new File("Z:\\");
+        File unidadDeRed = new File("C:\\");
 
 //        if (!unidadDeRed.exists()) {   
 //            JOptionPane.showMessageDialog(this, "Verifique la conexion de la unidad de red Z:\\ y vuelva a iniciar la aplicación.");

@@ -13,12 +13,13 @@ package Utilidades;
 public class Parametros {
     public static String dirRaiz = "Z:/PRUEBAS/";
     //public static String dirRecursos = "D:/RECURSOS/";
-    public static String dirFacturas = "Z:/FACTURAS/";
+//    public static String dirFacturas = "Z:/FACTURAS/";
+    public static String dirFacturas = "C:/FACTURAS/";
 //    public static String dirInformes = "D:/INFORMES/";//"Z:/INFORMES/";
 //    public static String dirInformes = "D:/INFORMES/";//"Z:/INFORMES/"; 
     //public static String dirInformes = "Z:/INFORMES/";//"Z:/INFORMES/"; JAOS
-    public static String dirInformes = "C:/Informes/";//"Z:/INFORMES/"; JAOS
-//    public static String dirInformes = "C:/Informes/";//"Z:/INFORMES/";
+    //public static String dirInformes = "Z:/INFORMES/";
+   public static String dirInformes = "C:/Informes/";//"Z:/INFORMES/";
     public static String separadorDecimal = ",";
     public static int cantDatosBasicos = 12;
 }
